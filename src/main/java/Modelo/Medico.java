@@ -4,10 +4,12 @@ import java.util.Objects;
 
 public class Medico {
     private String nombre;
+    private String rut;
     private String especialidad;
 
-    public Medico(String nombre, String especialidad) {
+    public Medico(String nombre, String rut, String especialidad) {
         this.nombre = nombre;
+        this.rut = rut;
         this.especialidad = especialidad;
     }
 
@@ -16,11 +18,14 @@ public class Medico {
         return nombre;
     }
 
+    public String getRut() {
+        return rut;
+    }
+
     public String getEspecialidad() {
         return especialidad;
     }
 
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -28,12 +33,10 @@ public class Medico {
         return nombre.equals(medico.nombre) && especialidad.equals(medico.especialidad);
     }
 
-    @Override
     public int hashCode() {
         return Objects.hash(nombre, especialidad);
     }
 
-    @Override
     public String toString() {
         return "Doctor{" +
                 "nombre='" + nombre + '\'' +
