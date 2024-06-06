@@ -11,6 +11,7 @@ public class Medico {
         this.especialidad = especialidad;
     }
 
+
     public String getNombre() {
         return nombre;
     }
