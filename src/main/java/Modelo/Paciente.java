@@ -1,5 +1,8 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Paciente extends Usuario {
     private String nombreCompleto;
     private String rut;
@@ -14,10 +17,11 @@ public class Paciente extends Usuario {
     private String medicamentos;
     private String cirugias;
     private String otros;
+    private List<String> horasMedicas; // Lista para almacenar las horas médicas
 
-    //Constructor
+    // Constructor
     public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros) {
-        super(rut, "1234", "Medico");
+        super(rut, "1234", "Paciente");
         this.nombreCompleto = nombreCompleto;
         this.rut = rut;
         this.edad = edad;
@@ -31,6 +35,7 @@ public class Paciente extends Usuario {
         this.medicamentos = medicamentos;
         this.cirugias = cirugias;
         this.otros = otros;
+        this.horasMedicas = new ArrayList<>();
     }
 
     // Getters
@@ -86,6 +91,10 @@ public class Paciente extends Usuario {
         return otros;
     }
 
+    public List<String> getHorasMedicas() {
+        return horasMedicas;
+    }
+
     // Setters
     public void setEdad(String edad) {
         this.edad = edad;
@@ -127,22 +136,23 @@ public class Paciente extends Usuario {
         this.otros = otros;
     }
 
-@Override
-    public String toString() {
-        return "Paciente{" +
-                "nombreCompleto='" + nombreCompleto + '\'' +
-                ", rut='" + rut + '\'' +
-                ", edad='" + edad + '\'' +
-                ", fechaNacimiento='" + fechaNacimiento + '\'' +
-                ", tipoSangre='" + tipoSangre + '\'' +
-                ", peso='" + peso + '\'' +
-                ", estadoCivil='" + estadoCivil + '\'' +
-                ", domicilio='" + domicilio + '\'' +
-                ", enfermedades='" + enfermedades + '\'' +
-                ", alergias='" + alergias + '\'' +
-                ", medicamentos='" + medicamentos + '\'' +
-                ", cirugias='" + cirugias + '\'' +
-                ", otros='" + otros + '\'' +
-                '}';
+    // Metodos para gestionar horas medicas
+    public void agendarHoraMedica(String fechaHora, String medico) {
+        String nuevaHora = fechaHora + " - " + medico;
+        horasMedicas.add(nuevaHora);
     }
+
+    public void modificarHoraMedica(String fechaHoraActual, String nuevaFechaHora, String nuevoMedico) {
+        for (int i = 0; i < horasMedicas.size(); i++) {
+            if (horasMedicas.get(i).startsWith(fechaHoraActual)) {
+                horasMedicas.set(i, nuevaFechaHora + " - " + nuevoMedico);
+                return;
+            }
+        }
+    }
+
+    public void eliminarHoraMedica(String fechaHora) {
+        horasMedicas.removeIf(hora -> hora.startsWith(fechaHora));
+    }
+
 }
