@@ -1,9 +1,7 @@
 package Modelo;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class Paciente extends Usuario {
+public class Paciente {
     private String nombreCompleto;
     private String rut;
     private String edad;
@@ -17,11 +15,9 @@ public class Paciente extends Usuario {
     private String medicamentos;
     private String cirugias;
     private String otros;
-    private List<String> horasMedicas; // Lista para almacenar las horas médicas
 
-    // Constructor
     public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros) {
-        super(rut, "1234", "Paciente");
+        super();
         this.nombreCompleto = nombreCompleto;
         this.rut = rut;
         this.edad = edad;
@@ -35,7 +31,6 @@ public class Paciente extends Usuario {
         this.medicamentos = medicamentos;
         this.cirugias = cirugias;
         this.otros = otros;
-        this.horasMedicas = new ArrayList<>();
     }
 
     // Getters
@@ -91,10 +86,6 @@ public class Paciente extends Usuario {
         return otros;
     }
 
-    public List<String> getHorasMedicas() {
-        return horasMedicas;
-    }
-
     // Setters
     public void setEdad(String edad) {
         this.edad = edad;
@@ -103,6 +94,11 @@ public class Paciente extends Usuario {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+    public void setTipoSangre(String tipoSangre) {
+        this.tipoSangre = tipoSangre;
+    }
+
 
     public void setPeso(String peso) {
         this.peso = peso;
@@ -135,24 +131,4 @@ public class Paciente extends Usuario {
     public void setOtros(String otros) {
         this.otros = otros;
     }
-
-    // Metodos para gestionar horas medicas
-    public void agendarHoraMedica(String fechaHora, String medico) {
-        String nuevaHora = fechaHora + " - " + medico;
-        horasMedicas.add(nuevaHora);
-    }
-
-    public void modificarHoraMedica(String fechaHoraActual, String nuevaFechaHora, String nuevoMedico) {
-        for (int i = 0; i < horasMedicas.size(); i++) {
-            if (horasMedicas.get(i).startsWith(fechaHoraActual)) {
-                horasMedicas.set(i, nuevaFechaHora + " - " + nuevoMedico);
-                return;
-            }
-        }
-    }
-
-    public void eliminarHoraMedica(String fechaHora) {
-        horasMedicas.removeIf(hora -> hora.startsWith(fechaHora));
-    }
-
 }
