@@ -1,6 +1,5 @@
 package Modelo;
 
-
 public class Paciente {
     private String nombreCompleto;
     private String rut;
@@ -15,9 +14,9 @@ public class Paciente {
     private String medicamentos;
     private String cirugias;
     private String otros;
+    private String fichaMedica;
 
-    public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros) {
-        super();
+    public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
         this.nombreCompleto = nombreCompleto;
         this.rut = rut;
         this.edad = edad;
@@ -31,6 +30,7 @@ public class Paciente {
         this.medicamentos = medicamentos;
         this.cirugias = cirugias;
         this.otros = otros;
+        this.fichaMedica = fichaMedica;
     }
 
     // Getters
@@ -86,7 +86,15 @@ public class Paciente {
         return otros;
     }
 
+    public String getFichaMedica() {
+        return fichaMedica;
+    }
+
     // Setters
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
     public void setEdad(String edad) {
         this.edad = edad;
     }
@@ -98,7 +106,6 @@ public class Paciente {
     public void setTipoSangre(String tipoSangre) {
         this.tipoSangre = tipoSangre;
     }
-
 
     public void setPeso(String peso) {
         this.peso = peso;
@@ -130,5 +137,31 @@ public class Paciente {
 
     public void setOtros(String otros) {
         this.otros = otros;
+    }
+
+    public void setFichaMedica(String fichaMedica) {
+        this.fichaMedica = fichaMedica;
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre completo: " + nombreCompleto +
+                "\nRUT: " + rut +
+                "\nEdad: " + edad +
+                "\nFecha de nacimiento: " + fechaNacimiento +
+                "\nTipo de sangre: " + tipoSangre +
+                "\nPeso: " + peso +
+                "\nEstado civil: " + estadoCivil +
+                "\nDomicilio: " + domicilio +
+                "\nEnfermedades: " + enfermedades +
+                "\nAlergias: " + alergias +
+                "\nMedicamentos: " + medicamentos +
+                "\nCirugías: " + cirugias +
+                "\nOtros: " + otros;
+    }
+
+    public boolean verificarContrasena(String contrasena) {
+        return this.fichaMedica.equals(contrasena);
+
     }
 }

@@ -3,12 +3,14 @@ package Modelo;
 public class Usuario {
     private String rut;
     private String contrasena;
-    private String rol;
 
-public Usuario(String rut, String contrasena, String rol){
+    public Usuario(String rut, String contrasena) {
         this.rut = rut;
         this.contrasena = contrasena;
-        this.rol = rol;
+    }
+
+    public boolean verificarContrasena(String contrasena) {
+        return this.contrasena.equals(contrasena);
     }
 
     // Getters
@@ -20,10 +22,6 @@ public Usuario(String rut, String contrasena, String rol){
         return contrasena;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
     // Setters
     public void setRut(String rut) {
         this.rut = rut;
@@ -33,11 +31,4 @@ public Usuario(String rut, String contrasena, String rol){
         this.contrasena = contrasena;
     }
 
-    public void setRol(String rol) {
-        if (rol.equals("Paciente") || rol.equals("Medico")) {
-            this.rol = rol;
-        } else {
-            throw new IllegalArgumentException("Rol inválido. Debe ser 'paciente' o 'medico'.");
-        }
-    }
 }

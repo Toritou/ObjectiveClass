@@ -1,13 +1,12 @@
 package Modelo;
 
 import Controlador.GestionCSV;
-import Modelo.Usuario;
 
 import java.util.Scanner;
 
 public class Login {
-    private Scanner scanner;
-    private GestionCSV gestionCSV;
+    private final Scanner scanner;
+    private final GestionCSV gestionCSV;
 
     public Login() {
         this.scanner = new Scanner(System.in);
@@ -20,12 +19,17 @@ public class Login {
         System.out.print("Ingrese su contraseña: ");
         String contrasena = scanner.nextLine();
 
-        Usuario usuario = gestionCSV.obtenerUsuarioPorRut(rut);
-        if (usuario != null && usuario.getContrasena().equals(contrasena)) {
-            System.out.println("Inicio de sesión exitoso.");
-            return usuario;
-        } else {
-            System.out.println("RUT o contraseña incorrectos.");
+        try {
+            Usuario usuario = gestionCSV.obtenerUsuarioPorRut(rut);
+            if (usuario != null && usuario.verificarContrasena(contrasena)) {
+                System.out.println("Inicio de sesión exitoso.");
+                return usuario;
+            } else {
+                System.out.println("RUT o contraseña incorrectos.");
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al iniciar sesión: " + e.getMessage());
             return null;
         }
     }

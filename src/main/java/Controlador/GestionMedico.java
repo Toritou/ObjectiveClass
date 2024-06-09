@@ -1,16 +1,18 @@
 package Controlador;
 
+import Modelo.Medico;
 import Modelo.Paciente;
+import Modelo.Usuario;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class GestionMedico {
-    private GestionCSV gestionCSV;
+    private final GestionCSV gestionCSV;
 
-    public GestionMedico(String archivoPacientes) {
-        this.gestionCSV = new GestionCSV("pacientes.csv", archivoPacientes);
+    public GestionMedico(String pacientes) {
+        this.gestionCSV = new GestionCSV(pacientes);
     }
 
     // Modificar paciente
@@ -114,14 +116,6 @@ public class GestionMedico {
         }
     }
 
-    // Agregar paciente
-    public void agregarPaciente(Paciente paciente) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
-        pacientes.add(paciente);
-        gestionCSV.guardarPacientes(pacientes);
-        System.out.println("Paciente agregado correctamente.");
-    }
-
     // Ver paciente
     public void verPaciente(String rut) {
         List<Paciente> pacientes = gestionCSV.cargarPacientes();
@@ -139,6 +133,33 @@ public class GestionMedico {
         List<Paciente> pacientes = gestionCSV.cargarPacientes();
         for (Paciente paciente : pacientes) {
             System.out.println(paciente);
+        }
+    }
+
+    public void modificarFichaPaciente(String rut, String nuevaInformacion) {
+        List<Paciente> pacientes = gestionCSV.cargarPacientes();
+        for (Paciente paciente : pacientes) {
+            if (paciente.getRut().equals(rut)) {
+                paciente.setFichaMedica(nuevaInformacion);
+                break;
+            }
+        }
+        gestionCSV.guardarPacientes(pacientes);
+    }
+
+    public void agregarPaciente(Paciente paciente) {
+        List<Paciente> pacientes = gestionCSV.cargarPacientes();
+        pacientes.add(paciente);
+        gestionCSV.guardarPacientes(pacientes);
+    }
+
+    public Medico obtenerMedicoPorRut(String rut) {
+        Usuario usuario = gestionCSV.obtenerUsuarioPorRut(rut);
+        if (usuario instanceof Medico) {
+            return (Medico) usuario;
+        } else {
+            // Manejar el caso en que el usuario no sea un médico
+            return null;
         }
     }
 }
