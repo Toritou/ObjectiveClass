@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.Medico;
 import Modelo.Paciente;
+import csv.CSVGenerator;
 
 import java.util.List;
 import java.util.Scanner;
@@ -13,6 +14,19 @@ public class GestionPaciente {
         this.medico = medico;
     }
 
+    public void agregarPaciente(Paciente nuevoPaciente) {
+        // Agregar el nuevo paciente al médico
+        medico.agregarPaciente(nuevoPaciente);
+
+        // Obtener la lista actualizada de pacientes del médico
+        List<Paciente> pacientesActualizados = medico.getPacientes();
+
+        // Generar el archivo CSV con la nueva información de los pacientes
+        CSVGenerator.generatePacientesCSV("pacientes.csv", pacientesActualizados);
+
+        System.out.println("Paciente agregado correctamente.");
+    }
+
     public Paciente iniciarSesion(String rut, String contrasena) {
         List<Paciente> pacientes = medico.getPacientes();
         for (Paciente paciente : pacientes) {
@@ -21,10 +35,6 @@ public class GestionPaciente {
             }
         }
         return null;
-    }
-
-    public void agregarPaciente(Paciente nuevoPaciente) {
-        medico.agregarPaciente(nuevoPaciente);
     }
 
     public void modificarInformacionPersonal(Paciente pacienteActual) {
@@ -80,7 +90,4 @@ public class GestionPaciente {
         medico.modificarFichaPaciente(paciente.getRut(), nuevaInformacion);
         System.out.println("Ficha médica modificada correctamente.");
     }
-
-
-
 }

@@ -33,6 +33,10 @@ public class Paciente {
         this.fichaMedica = fichaMedica;
     }
 
+    public Paciente(String nombreCompleto, String juanPérez, int i, String fechaNacimiento, String tipoSangre, int i1, String soltero, String domicilio, String ninguna, String ninguna1, String ninguno, String ninguna2, String ninguno1) {
+    }
+
+
     // Getters
     public String getNombreCompleto() {
         return nombreCompleto;

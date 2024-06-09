@@ -3,6 +3,7 @@ package Launcher;
 import Controlador.GestionMedico;
 import Controlador.GestionPaciente;
 import Modelo.Medico;
+import csv.CSVGenerator;
 
 import java.util.Scanner;
 
@@ -11,10 +12,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         // Crear una instancia de GestionMedico
-        GestionMedico gestionMedico = new GestionMedico("pacientes.csv");
+        GestionMedico gestionMedico = new GestionMedico();
 
-        // Obtener el médico por el RUT
-        Medico medico = gestionMedico.obtenerMedicoPorRut("1234");
+        // Crear un médico de prueba y agregarlo a la lista de pacientes
+        Medico medico = new Medico("1234", "Dr. Juan Perez", "Medicina General", "Hospital ABC");
+        gestionMedico.agregarPaciente(medico);
+
+        // Generar el CSV de médicos
+        CSVGenerator.generateMedicosCSV("medicos.csv", gestionMedico.getMedicos());
 
         if (medico != null) {
             // Crear una instancia de GestionPaciente
@@ -25,8 +30,13 @@ public class Main {
 
             // Mostrar el menú general
             menuGeneral.mostrarMenu();
-
-            scanner.close();
+        } else {
+            System.out.println("El médico no fue encontrado.");
         }
+
+        // Generar el CSV de pacientes
+        CSVGenerator.generatePacientesCSV("pacientes.csv", gestionMedico.getPacientes());
+
+        scanner.close();
     }
 }

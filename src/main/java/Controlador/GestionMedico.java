@@ -2,22 +2,30 @@ package Controlador;
 
 import Modelo.Medico;
 import Modelo.Paciente;
-import Modelo.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class GestionMedico {
-    private final GestionCSV gestionCSV;
+    private final List<Paciente> pacientes;
+    private final List<Medico> medicos;
 
-    public GestionMedico(String pacientes) {
-        this.gestionCSV = new GestionCSV(pacientes);
+    public GestionMedico() {
+        this.pacientes = new ArrayList<>();
+        this.medicos = new ArrayList<>();
+        // Agregar pacientes manualmente para propósitos de prueba
+        // Puedes reemplazar estos valores con datos reales
+        pacientes.add(new Paciente("11111111-1", "Juan Pérez", 30, "01/01/1993", "A+", 70, "Soltero", "Calle 123", "Ninguna", "Ninguna", "Ninguno", "Ninguna", "Ninguno"));
+        pacientes.add(new Paciente("22222222-2", "María López", 25, "02/02/1998", "O-", 60, "Casada", "Calle 456", "Asma", "Polen", "Ventolin", "Apéndice", "Ninguno"));
+        // Agregar médicos manualmente para propósitos de prueba
+        // Puedes reemplazar estos valores con datos reales
+        medicos.add(new Medico("1234", "Dr. Juan Perez", "Medicina General", "Hospital ABC"));
     }
 
     // Modificar paciente
     public void modificarPaciente(String rut) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
         Optional<Paciente> pacienteOptional = pacientes.stream().filter(p -> p.getRut().equals(rut)).findFirst();
         if (pacienteOptional.isPresent()) {
             Paciente paciente = pacienteOptional.get();
@@ -30,11 +38,10 @@ public class GestionMedico {
                 paciente.setNombreCompleto(nombreCompleto);
             }
 
-            // Similar for other fields
             System.out.print("Edad [" + paciente.getEdad() + "]: ");
             String edad = scanner.nextLine();
             if (!edad.isEmpty()) {
-                paciente.setEdad(edad);
+                paciente.setEdad(String.valueOf(Integer.parseInt(edad)));
             }
 
             System.out.print("Fecha de nacimiento [" + paciente.getFechaNacimiento() + "]: ");
@@ -52,7 +59,7 @@ public class GestionMedico {
             System.out.print("Peso [" + paciente.getPeso() + "]: ");
             String peso = scanner.nextLine();
             if (!peso.isEmpty()) {
-                paciente.setPeso(peso);
+                paciente.setPeso(String.valueOf(Double.parseDouble(peso)));
             }
 
             System.out.print("Estado civil [" + paciente.getEstadoCivil() + "]: ");
@@ -97,7 +104,6 @@ public class GestionMedico {
                 paciente.setOtros(otros);
             }
 
-            gestionCSV.guardarPacientes(pacientes);
             System.out.println("Paciente modificado correctamente.");
         } else {
             System.out.println("Paciente no encontrado.");
@@ -106,10 +112,8 @@ public class GestionMedico {
 
     // Eliminar paciente
     public void eliminarPaciente(String rut) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
         boolean removed = pacientes.removeIf(p -> p.getRut().equals(rut));
         if (removed) {
-            gestionCSV.guardarPacientes(pacientes);
             System.out.println("Paciente eliminado correctamente.");
         } else {
             System.out.println("Paciente no encontrado.");
@@ -118,7 +122,6 @@ public class GestionMedico {
 
     // Ver paciente
     public void verPaciente(String rut) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
         Optional<Paciente> pacienteOptional = pacientes.stream().filter(p -> p.getRut().equals(rut)).findFirst();
         if (pacienteOptional.isPresent()) {
             Paciente paciente = pacienteOptional.get();
@@ -130,36 +133,41 @@ public class GestionMedico {
 
     // Ver lista de pacientes
     public void verListaDePacientes() {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
-        for (Paciente paciente : pacientes) {
+        for (Paciente paciente : pacientes)  {
             System.out.println(paciente);
         }
     }
 
     public void modificarFichaPaciente(String rut, String nuevaInformacion) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
         for (Paciente paciente : pacientes) {
             if (paciente.getRut().equals(rut)) {
                 paciente.setFichaMedica(nuevaInformacion);
                 break;
             }
         }
-        gestionCSV.guardarPacientes(pacientes);
     }
 
-    public void agregarPaciente(Paciente paciente) {
-        List<Paciente> pacientes = gestionCSV.cargarPacientes();
+    // Agregar paciente (Medico) a la lista
+    public void agregarPaciente(Medico paciente) {
         pacientes.add(paciente);
-        gestionCSV.guardarPacientes(pacientes);
+        System.out.println("Paciente agregado correctamente.");
     }
 
+    // Obtener médico por su RUT
     public Medico obtenerMedicoPorRut(String rut) {
-        Usuario usuario = gestionCSV.obtenerUsuarioPorRut(rut);
-        if (usuario instanceof Medico) {
-            return (Medico) usuario;
-        } else {
-            // Manejar el caso en que el usuario no sea un médico
-            return null;
+        for (Paciente paciente : pacientes) {
+            if (paciente instanceof Medico && paciente.getRut().equals(rut)) {
+                return (Medico) paciente;
+            }
         }
+        return null; // Manejar el caso en que el usuario no sea un médico
+    }
+
+    public List<Medico> getMedicos() {
+        return medicos;
+    }
+
+    public List<Paciente> getPacientes() {
+        return pacientes;
     }
 }

@@ -3,30 +3,28 @@ package Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Medico extends Usuario {
-    private String nombre;
-    private String rut;
+public class Medico extends Paciente {
     private String especialidad;
     private List<Paciente> pacientes;
 
-    public Medico(String nombre, String rut, String especialidad) {
-        super("123456789", "12345");
-        this.nombre = nombre;
-        this.rut = rut;
+    // Constructor completo para inicializar Medico como Paciente
+    public Medico(String rut, String nombre, String especialidad, String hospital) {
+        super(rut, nombre, 0, "", "", (int) 0.0, "", "", "", "", "", "", ""); // Valores por defecto para Paciente
         this.especialidad = especialidad;
         this.pacientes = new ArrayList<>();
     }
 
-
-    public String getRut() {
-        return rut;
+    public String getEspecialidad() {
+        return especialidad;
     }
 
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
 
     public List<Paciente> getPacientes() {
         return pacientes;
     }
-
 
     public void agregarPaciente(Paciente paciente) {
         pacientes.add(paciente);
@@ -40,6 +38,7 @@ public class Medico extends Usuario {
         }
         return null;
     }
+
     public void modificarFichaPaciente(String rut, String nuevaInformacion) {
         for (Paciente paciente : pacientes) {
             if (paciente.getRut().equals(rut)) {
@@ -48,5 +47,10 @@ public class Medico extends Usuario {
             }
         }
         System.out.println("Paciente no encontrado.");
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Especialidad: " + especialidad + ", Pacientes: " + pacientes.size();
     }
 }
