@@ -16,7 +16,7 @@ public class MenuGeneral {
         this.gestionPaciente = gestionPaciente;
     }
 
-    public <MenuPaciente> void mostrarMenu() {
+    public void mostrarMenu() {
         int opcion;
         do {
             System.out.println("=== Menú General ===");
@@ -25,7 +25,7 @@ public class MenuGeneral {
             System.out.println("3. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // Consumir el salto de línea después de nextInt
 
             switch (opcion) {
                 case 1:
@@ -84,11 +84,11 @@ public class MenuGeneral {
         System.out.print("Ingrese una contraseña para su ficha médica: ");
         String contrasena = scanner.nextLine();
 
-
+        // Crea un nuevo objeto Paciente con la información proporcionada
         Paciente nuevoPaciente = new Paciente(nombre, rut, edad, fechaNacimiento, tipoSangre, peso, estadoCivil,
                 domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
 
-
+        // Agrega el nuevo paciente a la lista de pacientes utilizando la clase GestionPaciente
         gestionPaciente.agregarPaciente(nuevoPaciente);
 
         System.out.println("Registro completado con éxito.");
