@@ -4,6 +4,7 @@ import Modelo.Medico;
 import Modelo.Paciente;
 import csv.CSVGenerator;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,11 +17,8 @@ public class GestionPaciente {
 
     public void agregarPaciente(Paciente nuevoPaciente) {
         medico.agregarPaciente(nuevoPaciente);
-
         List<Paciente> pacientesActualizados = medico.getPacientes();
-
         CSVGenerator.generatePacientesCSV("pacientes.csv", pacientesActualizados);
-
         System.out.println("Paciente agregado correctamente.");
     }
 
@@ -81,8 +79,15 @@ public class GestionPaciente {
         String nuevaInformacion = scanner.nextLine();
 
         paciente.setFichaMedica(nuevaInformacion);
-
         medico.modificarFichaPaciente(paciente.getRut(), nuevaInformacion);
         System.out.println("Ficha médica modificada correctamente.");
+    }
+
+    public void agendarCita(Paciente paciente, Date fechaHora) {
+        // Implementa la lógica para guardar la cita
+        System.out.println("Cita agendada para el paciente " + paciente.getNombreCompleto() +
+                " en la fecha y hora: " + fechaHora);
+
+        // Aquí puedes añadir la lógica para guardar la cita en la base de datos, archivo, etc.
     }
 }

@@ -22,7 +22,12 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
+        <!-- Agregando la dependencia de JCalendar -->
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version> <!-- Asegúrate de usar la versión más reciente -->
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>22</maven.compiler.source>

@@ -1,14 +1,20 @@
 package Launcher;
 
+import com.toedter.calendar.JDateChooser;
 import Controlador.GestionPaciente;
 import Modelo.Paciente;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MenuPaciente {
     private final Scanner scanner;
     private final GestionPaciente gestionPaciente;
-    private Paciente pacienteActual; // El paciente que ha iniciado sesión
+    private Paciente pacienteActual;
 
     public MenuPaciente(Scanner scanner, GestionPaciente gestionPaciente) {
         this.scanner = scanner;
@@ -31,7 +37,7 @@ public class MenuPaciente {
     }
 
     public void mostrarMenu() {
-        iniciarSesion(); // Iniciar sesión al mostrar el menú
+        iniciarSesion();
         int opcion;
         do {
             System.out.println("=== Menú del Paciente ===");
@@ -43,7 +49,7 @@ public class MenuPaciente {
             System.out.println("6. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea después de nextInt
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -59,7 +65,7 @@ public class MenuPaciente {
                     modificarFichaMedica();
                     break;
                 case 5:
-                    System.out.println("proximamente");
+                    agendarHora();
                     break;
                 case 6:
                     System.out.println("Saliendo del menú...");
@@ -102,5 +108,33 @@ public class MenuPaciente {
         }
     }
 
-    //! agregar metodo para la agendar horas
+    private void agendarHora() {
+        if (pacienteActual != null) {
+            JDateChooser dateChooser = new JDateChooser();
+            dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+
+            JFrame frame = new JFrame("Seleccione la Fecha y Hora");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.getContentPane().add(dateChooser);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    Date selectedDate = dateChooser.getDate();
+                    if (selectedDate != null) {
+                        System.out.println("Cita agendada para: " + selectedDate);
+                        gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                    } else {
+                        System.out.println("No se seleccionó ninguna fecha.");
+                    }
+                }
+            });
+        } else {
+            System.out.println("Debe iniciar sesión primero.");
+        }
+    }
 }
