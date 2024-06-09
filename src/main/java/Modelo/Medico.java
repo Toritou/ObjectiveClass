@@ -1,42 +1,56 @@
 package Modelo;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Medico {
-    private String nombre;
+public class Medico extends Paciente {
     private String especialidad;
+    private List<Paciente> pacientes;
 
-    public Medico(String nombre, String especialidad) {
-        this.nombre = nombre;
+    // Constructor completo para inicializar Medico como Paciente
+    public Medico(String rut, String nombre, String especialidad, String hospital) {
+        super(rut, nombre, 0, "", "", (int) 0.0, "", "", "", "", "", "", ""); // Valores por defecto para Paciente
         this.especialidad = especialidad;
-    }
-
-    public String getNombre() {
-        return nombre;
+        this.pacientes = new ArrayList<>();
     }
 
     public String getEspecialidad() {
         return especialidad;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Medico medico = (Medico) obj;
-        return nombre.equals(medico.nombre) && especialidad.equals(medico.especialidad);
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(nombre, especialidad);
+    public List<Paciente> getPacientes() {
+        return pacientes;
+    }
+
+    public void agregarPaciente(Paciente paciente) {
+        pacientes.add(paciente);
+    }
+
+    public Paciente obtenerPacientePorRut(String rut) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getRut().equals(rut)) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    public void modificarFichaPaciente(String rut, String nuevaInformacion) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getRut().equals(rut)) {
+                paciente.setFichaMedica(nuevaInformacion);
+                return;
+            }
+        }
+        System.out.println("Paciente no encontrado.");
     }
 
     @Override
     public String toString() {
-        return "Doctor{" +
-                "nombre='" + nombre + '\'' +
-                ", especialidad='" + especialidad + '\'' +
-                '}';
+        return super.toString() + ", Especialidad: " + especialidad + ", Pacientes: " + pacientes.size();
     }
 }
