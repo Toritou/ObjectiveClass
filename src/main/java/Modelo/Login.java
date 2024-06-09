@@ -12,9 +12,6 @@ public class Login {
         this.scanner = new Scanner(System.in);
         this.usuarios = new ArrayList<>();
 
-        usuarios.add(new Usuario("11111111-1", "password1"));
-        usuarios.add(new Usuario("22222222-2", "password2"));
-        usuarios.add(new Usuario("33333333-3", "password3"));
     }
 
     public Usuario iniciarSesion(String s, String password1) {

@@ -1,81 +1,72 @@
 package csv;
 
+import Controlador.GestionMedico;
+import Controlador.GestionPaciente;
 import Modelo.Medico;
 import Modelo.Paciente;
-import Modelo.Usuario;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CSVGenerator {
 
-    private static String safeString(String value) {
-        return value == null ? "" : value;
-    }
-
-    public static void generatePacientesCSV(String fileName, List<Paciente> pacientes) {
-        try (FileWriter writer = new FileWriter(fileName)) {
-
-            writer.append("Nombre Completo,RUT,Edad,Fecha de Nacimiento,Tipo de Sangre,Peso,Estado Civil,Domicilio,Enfermedades,Alergias,Medicamentos,Cirugias,Otros,Ficha Médica\n");
-
-            for (Paciente paciente : pacientes) {
-                writer.append(String.join(",",
-                        safeString(paciente.getNombreCompleto()),
-                        safeString(paciente.getRut()),
-                        safeString(paciente.getEdad()),
-                        safeString(paciente.getFechaNacimiento()),
-                        safeString(paciente.getTipoSangre()),
-                        safeString(paciente.getPeso()),
-                        safeString(paciente.getEstadoCivil()),
-                        safeString(paciente.getDomicilio()),
-                        safeString(paciente.getEnfermedades()),
-                        safeString(paciente.getAlergias()),
-                        safeString(paciente.getMedicamentos()),
-                        safeString(paciente.getCirugias()),
-                        safeString(paciente.getOtros()),
-                        safeString(paciente.getFichaMedica())));
-                writer.append("\n");
+    public static void generateMedicosCSV(String filePath, Map<String, Medico> medicos) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Medico medico : medicos.values()) {
+                writer.write(medico.getRut() + "," + medico.getNombre() + "," + medico.getEspecialidad());
+                writer.newLine();
             }
-            System.out.println("CSV de Pacientes generado correctamente: " + fileName);
         } catch (IOException e) {
-            System.err.println("Error al generar el CSV de Pacientes: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public static void generateMedicosCSV(String fileName, List<Medico> medicos) {
-        try (FileWriter writer = new FileWriter(fileName)) {
-            // Escribir encabezados
-            writer.append("Nombre,Especialidad,Hospital,RUT,Pacientes\n");
-
-            for (Medico medico : medicos) {
-                writer.append(String.join(",",
-                        safeString(medico.getNombreCompleto()),
-                        safeString(medico.getEspecialidad()),
-                        safeString(medico.getRut()),
-                        String.valueOf(medico.getPacientes() != null ? medico.getPacientes().size() : 0)));
-                writer.append("\n");
+    public static void generatePacientesCSV(String filePath, Map<String, Paciente> pacientes) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Paciente paciente : pacientes.values()) {
+                writer.write(paciente.getRut() + "," + paciente.getNombreCompleto() + "," + paciente.getEdad() + "," + paciente.getFechaNacimiento() + "," +
+                        paciente.getTipoSangre() + "," + paciente.getPeso() + "," + paciente.getEstadoCivil() + "," + paciente.getDomicilio() + "," +
+                        paciente.getEnfermedades() + "," + paciente.getAlergias() + "," + paciente.getMedicamentos() + "," + paciente.getCirugias() + "," +
+                        paciente.getOtros() + "," + paciente.getFichaMedica());
+                writer.newLine();
             }
-            System.out.println("CSV de Médicos generado correctamente: " + fileName);
         } catch (IOException e) {
-            System.err.println("Error al generar el CSV de Médicos: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public static void generateUsuariosCSV(String fileName, List<Usuario> usuarios) {
-        try (FileWriter writer = new FileWriter(fileName)) {
-
-            writer.append("RUT,Contraseña\n");
-
-            for (Usuario usuario : usuarios) {
-                writer.append(String.join(",",
-                        safeString(usuario.getRut()),
-                        safeString(usuario.getContrasena())));
-                writer.append("\n");
+    public static GestionMedico cargarMedicosDesdeCSV(String filePath) {
+        Map<String, Medico> medicos = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 4) {
+                    Medico medico = new Medico(parts[0], parts[1], parts[2], parts[3]);
+                    medicos.put(parts[0], medico);
+                }
             }
-            System.out.println("CSV de Usuarios generado correctamente: " + fileName);
         } catch (IOException e) {
-            System.err.println("Error al generar el CSV de Usuarios: " + e.getMessage());
+            e.printStackTrace();
         }
+        return new GestionMedico((HashMap<String, Medico>) medicos);
+    }
+
+    public static GestionPaciente cargarPacientesDesdeCSV(String filePath) {
+        Map<String, Paciente> pacientes = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 14) {
+                    Paciente paciente = new Paciente(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8], parts[9], parts[10], parts[11], parts[12], parts[13]);
+                    pacientes.put(parts[0], paciente);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new GestionPaciente(pacientes);
     }
 }

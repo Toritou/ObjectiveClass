@@ -1,93 +1,75 @@
 package Controlador;
 
-import Modelo.Medico;
 import Modelo.Paciente;
-import csv.CSVGenerator;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GestionPaciente {
-    private final Medico medico;
+    private Map<String, Paciente> pacientes;
 
-    public GestionPaciente(Medico medico) {
-        this.medico = medico;
+    public GestionPaciente(Map<String, Paciente> pacientes) {
+        this.pacientes = new HashMap<>();
     }
 
-    public void agregarPaciente(Paciente nuevoPaciente) {
-        medico.agregarPaciente(nuevoPaciente);
-        List<Paciente> pacientesActualizados = medico.getPacientes();
-        CSVGenerator.generatePacientesCSV("pacientes.csv", pacientesActualizados);
-        System.out.println("Paciente agregado correctamente.");
+    public void agregarPaciente(Paciente paciente) {
+        pacientes.put(paciente.getRut(), paciente);
+    }
+
+    public Paciente obtenerPacientePorRut(String rut) {
+        return pacientes.get(rut);
+    }
+
+    public void eliminarPaciente(String rut) {
+        pacientes.remove(rut);
+    }
+
+    public Map<String, Paciente> getPacientes() {
+        return pacientes;
     }
 
     public Paciente iniciarSesion(String rut, String contrasena) {
-        List<Paciente> pacientes = medico.getPacientes();
-        for (Paciente paciente : pacientes) {
-            if (paciente.getRut().equals(rut) && paciente.verificarContrasena(contrasena)) {
-                return paciente;
-            }
+        Paciente paciente = pacientes.get(rut);
+        if (paciente != null && paciente.verificarContrasena(contrasena)) {
+            return paciente;
         }
         return null;
     }
 
     public void modificarInformacionPersonal(Paciente pacienteActual) {
-        System.out.println("Modificar datos personales (dejar en blanco para no modificar):");
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Nombre completo [" + pacienteActual.getNombreCompleto() + "]: ");
-        String nombreCompleto = scanner.nextLine();
-        if (!nombreCompleto.isEmpty()) {
-            pacienteActual.setNombreCompleto(nombreCompleto);
-        }
-
-        System.out.print("Edad [" + pacienteActual.getEdad() + "]: ");
-        String edad = scanner.nextLine();
-        if (!edad.isEmpty()) {
-            pacienteActual.setEdad(edad);
-        }
-
-        System.out.print("Fecha de nacimiento [" + pacienteActual.getFechaNacimiento() + "]: ");
-        String fechaNacimiento = scanner.nextLine();
-        if (!fechaNacimiento.isEmpty()) {
-            pacienteActual.setFechaNacimiento(fechaNacimiento);
-        }
-
-        System.out.print("Tipo de sangre [" + pacienteActual.getTipoSangre() + "]: ");
-        String tipoSangre = scanner.nextLine();
-        if (!tipoSangre.isEmpty()) {
-            pacienteActual.setTipoSangre(tipoSangre);
-        }
-
-        System.out.print("Peso [" + pacienteActual.getPeso() + "]: ");
-        String peso = scanner.nextLine();
-        if (!peso.isEmpty()) {
-            pacienteActual.setPeso(peso);
-        }
-
-        System.out.print("Estado civil [" + pacienteActual.getEstadoCivil() + "]: ");
-        String estadoCivil = scanner.nextLine();
-        if (!estadoCivil.isEmpty()) {
-            pacienteActual.setEstadoCivil(estadoCivil);
+        Paciente paciente = pacientes.get(pacienteActual.getRut());
+        if (paciente != null) {
+            paciente.setNombreCompleto(pacienteActual.getNombreCompleto());
+            paciente.setEdad(pacienteActual.getEdad());
+            paciente.setFechaNacimiento(pacienteActual.getFechaNacimiento());
+            paciente.setTipoSangre(pacienteActual.getTipoSangre());
+            paciente.setPeso(pacienteActual.getPeso());
+            paciente.setEstadoCivil(pacienteActual.getEstadoCivil());
+            paciente.setDomicilio(pacienteActual.getDomicilio());
+            paciente.setEnfermedades(pacienteActual.getEnfermedades());
+            paciente.setAlergias(pacienteActual.getAlergias());
+            paciente.setMedicamentos(pacienteActual.getMedicamentos());
+            paciente.setCirugias(pacienteActual.getCirugias());
+            paciente.setOtros(pacienteActual.getOtros());
+            System.out.println("Información personal actualizada exitosamente.");
+        } else {
+            System.out.println("Paciente no encontrado.");
         }
     }
 
-    public void modificarFichaMedica(Paciente paciente) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese la nueva información para la ficha médica:");
-        String nuevaInformacion = scanner.nextLine();
-
-        paciente.setFichaMedica(nuevaInformacion);
-        medico.modificarFichaPaciente(paciente.getRut(), nuevaInformacion);
-        System.out.println("Ficha médica modificada correctamente.");
+    public void modificarFichaMedica(Paciente pacienteActual) {
+        Paciente paciente = pacientes.get(pacienteActual.getRut());
+        if (paciente != null) {
+            paciente.setFichaMedica(pacienteActual.getFichaMedica());
+            System.out.println("Ficha médica actualizada exitosamente.");
+        } else {
+            System.out.println("Paciente no encontrado.");
+        }
     }
 
-    public void agendarCita(Paciente paciente, Date fechaHora) {
-        // Implementa la lógica para guardar la cita
-        System.out.println("Cita agendada para el paciente " + paciente.getNombreCompleto() +
-                " en la fecha y hora: " + fechaHora);
-
-        // Aquí puedes añadir la lógica para guardar la cita en la base de datos, archivo, etc.
+    public void agendarCita(Paciente pacienteActual, Date selectedDate) {
+        System.out.println("Cita agendada para " + pacienteActual.getNombreCompleto() + " el " + selectedDate);
+        // Aquí puedes implementar la lógica adicional para gestionar la agenda del médico.
     }
 }

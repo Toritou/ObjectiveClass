@@ -1,6 +1,8 @@
 package Launcher;
 
 import Controlador.GestionMedico;
+import Modelo.Paciente;
+
 import java.util.Scanner;
 
 public class MenuMedico {
@@ -56,26 +58,65 @@ public class MenuMedico {
     }
 
     private void verPacientes() {
-        // Implementa la lógica para ver la lista de pacientes del médico
+        System.out.println("Lista de pacientes:");
+        for (Paciente paciente : gestionMedico.getPacientes().values()) {
+            System.out.println(paciente);
+        }
     }
 
     private void agregarPaciente() {
-        // Implementa la lógica para agregar un nuevo paciente a la lista del médico
+        System.out.print("Ingrese el RUT del nuevo paciente: ");
+        String rut = scanner.nextLine();
+        System.out.print("Ingrese el nombre completo del paciente: ");
+        String nombreCompleto = scanner.nextLine();
+        System.out.print("Ingrese la edad del paciente: ");
+        String edad = scanner.nextLine();
+        // Continuar con los demás datos necesarios
+
+        Paciente nuevoPaciente = new Paciente(nombreCompleto, rut, edad, "", "", "", "", "", "", "", "", "", "", "");
+        gestionMedico.agregarPaciente(nuevoPaciente);
+        System.out.println("Paciente agregado exitosamente.");
     }
 
     private void modificarPaciente() {
-        // Implementa la lógica para modificar la información de un paciente
+        System.out.print("Ingrese el RUT del paciente a modificar: ");
+        String rut = scanner.nextLine();
+        Paciente paciente = gestionMedico.obtenerPacientePorRut(rut);
+
+        if (paciente != null) {
+            System.out.println("Ingrese los nuevos datos para el paciente:");
+            // Pida los nuevos datos y actualice el paciente
+            System.out.print("Nuevo nombre completo: ");
+            String nombreCompleto = scanner.nextLine();
+            paciente.setNombreCompleto(nombreCompleto);
+            // Continuar con los demás campos
+
+            gestionMedico.actualizarPaciente(rut, paciente);
+            System.out.println("Paciente actualizado exitosamente.");
+        } else {
+            System.out.println("Paciente no encontrado.");
+        }
     }
 
     private void eliminarPaciente() {
-        // Implementa la lógica para eliminar un paciente de la lista del médico
+        System.out.print("Ingrese el RUT del paciente a eliminar: ");
+        String rut = scanner.nextLine();
+        gestionMedico.eliminarPaciente(rut);
     }
 
     private void verFichaMedicaPaciente() {
-        // Implementa la lógica para ver la ficha médica de un paciente específico
+        System.out.print("Ingrese el RUT del paciente: ");
+        String rut = scanner.nextLine();
+        Paciente paciente = gestionMedico.obtenerPacientePorRut(rut);
+        if (paciente != null) {
+            System.out.println(paciente.getFichaMedica());
+        } else {
+            System.out.println("Paciente no encontrado.");
+        }
     }
 
     private void modificarAgendaHoras() {
-        // Implementa la lógica para modificar la agenda de horas del médico
+        // Implementar la lógica para modificar la agenda de horas
+        System.out.println("Funcionalidad en desarrollo.");
     }
 }

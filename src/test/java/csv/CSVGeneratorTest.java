@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +19,7 @@ public class CSVGeneratorTest {
 
         String fileName = "medicos_test.csv";
 
-        CSVGenerator.generateMedicosCSV(fileName, medicos);
+        CSVGenerator.generateMedicosCSV(fileName, (Map<String, Medico>) medicos);
 
         File file = new File(fileName);
         assertTrue(file.exists(), "El archivo CSV no se ha creado");

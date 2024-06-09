@@ -81,14 +81,12 @@ public class MenuGeneral {
         String cirugias = scanner.nextLine();
         System.out.print("Ingrese otros datos relevantes: ");
         String otros = scanner.nextLine();
-        System.out.print("Ingrese una contraseña para su ficha médica: ");
+        System.out.print("Ingrese una contraseña para su registro: ");
         String contrasena = scanner.nextLine();
 
-        // Crea un nuevo objeto Paciente con la información proporcionada
         Paciente nuevoPaciente = new Paciente(nombre, rut, edad, fechaNacimiento, tipoSangre, peso, estadoCivil,
                 domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
 
-        // Agrega el nuevo paciente a la lista de pacientes utilizando la clase GestionPaciente
         gestionPaciente.agregarPaciente(nuevoPaciente);
 
         System.out.println("Registro completado con éxito.");

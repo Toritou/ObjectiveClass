@@ -2,14 +2,14 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Medico extends Paciente {
-    private String especialidad;
+    private final String especialidad;
     private List<Paciente> pacientes;
 
-    // Constructor completo para inicializar Medico como Paciente
     public Medico(String rut, String nombre, String especialidad, String hospital) {
-        super(rut, nombre, 0, "", "", (int) 0.0, "", "", "", "", "", "", ""); // Valores por defecto para Paciente
+        super(rut, nombre, "", "", "", "", "", "", "", "", "", "", "", "");
         this.especialidad = especialidad;
         this.pacientes = new ArrayList<>();
     }
@@ -18,12 +18,8 @@ public class Medico extends Paciente {
         return especialidad;
     }
 
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public List<Paciente> getPacientes() {
-        return pacientes;
+    public Map<? extends String, ? extends Paciente> getPacientes() {
+        return (Map<? extends String, ? extends Paciente>) pacientes;
     }
 
     public void agregarPaciente(Paciente paciente) {
@@ -52,5 +48,9 @@ public class Medico extends Paciente {
     @Override
     public String toString() {
         return super.toString() + ", Especialidad: " + especialidad + ", Pacientes: " + pacientes.size();
+    }
+
+    public char getNombre() {
+        return 0;
     }
 }

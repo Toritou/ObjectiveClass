@@ -22,23 +22,14 @@ public class Usuario {
         }
     }
 
-
     // Getters
     public String getRut() {
         return rut;
     }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
     // Setters
     public void setRut(String rut) {
         this.rut = rut;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
     }
 
 }
