@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Paciente {
+public class Paciente  {
     private String nombreCompleto;
     private String rut;
     private String edad;
@@ -33,8 +33,9 @@ public class Paciente {
         this.fichaMedica = fichaMedica;
     }
 
-    public Paciente(String nombreCompleto, String juanPérez, int i, String fechaNacimiento, String tipoSangre, int i1, String soltero, String domicilio, String ninguna, String ninguna1, String ninguno, String ninguna2, String ninguno1) {
+    public Paciente(String rut, String nombre, int i, String fechaNacimiento, String tipoSangre, int i1, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros) {
     }
+
 
 
     // Getters

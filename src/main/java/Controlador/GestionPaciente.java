@@ -15,13 +15,10 @@ public class GestionPaciente {
     }
 
     public void agregarPaciente(Paciente nuevoPaciente) {
-        // Agregar el nuevo paciente al médico
         medico.agregarPaciente(nuevoPaciente);
 
-        // Obtener la lista actualizada de pacientes del médico
         List<Paciente> pacientesActualizados = medico.getPacientes();
 
-        // Generar el archivo CSV con la nueva información de los pacientes
         CSVGenerator.generatePacientesCSV("pacientes.csv", pacientesActualizados);
 
         System.out.println("Paciente agregado correctamente.");
@@ -83,10 +80,8 @@ public class GestionPaciente {
         System.out.println("Ingrese la nueva información para la ficha médica:");
         String nuevaInformacion = scanner.nextLine();
 
-        // Llamar al método correspondiente en la clase Paciente
         paciente.setFichaMedica(nuevaInformacion);
 
-        // Guardar los cambios en la lista de pacientes
         medico.modificarFichaPaciente(paciente.getRut(), nuevaInformacion);
         System.out.println("Ficha médica modificada correctamente.");
     }

@@ -15,16 +15,10 @@ public class GestionMedico {
     public GestionMedico() {
         this.pacientes = new ArrayList<>();
         this.medicos = new ArrayList<>();
-        // Agregar pacientes manualmente para propósitos de prueba
-        // Puedes reemplazar estos valores con datos reales
-        pacientes.add(new Paciente("11111111-1", "Juan Pérez", 30, "01/01/1993", "A+", 70, "Soltero", "Calle 123", "Ninguna", "Ninguna", "Ninguno", "Ninguna", "Ninguno"));
-        pacientes.add(new Paciente("22222222-2", "María López", 25, "02/02/1998", "O-", 60, "Casada", "Calle 456", "Asma", "Polen", "Ventolin", "Apéndice", "Ninguno"));
-        // Agregar médicos manualmente para propósitos de prueba
-        // Puedes reemplazar estos valores con datos reales
+
         medicos.add(new Medico("1234", "Dr. Juan Perez", "Medicina General", "Hospital ABC"));
     }
 
-    // Modificar paciente
     public void modificarPaciente(String rut) {
         Optional<Paciente> pacienteOptional = pacientes.stream().filter(p -> p.getRut().equals(rut)).findFirst();
         if (pacienteOptional.isPresent()) {
@@ -110,7 +104,6 @@ public class GestionMedico {
         }
     }
 
-    // Eliminar paciente
     public void eliminarPaciente(String rut) {
         boolean removed = pacientes.removeIf(p -> p.getRut().equals(rut));
         if (removed) {
@@ -120,7 +113,6 @@ public class GestionMedico {
         }
     }
 
-    // Ver paciente
     public void verPaciente(String rut) {
         Optional<Paciente> pacienteOptional = pacientes.stream().filter(p -> p.getRut().equals(rut)).findFirst();
         if (pacienteOptional.isPresent()) {
@@ -131,7 +123,6 @@ public class GestionMedico {
         }
     }
 
-    // Ver lista de pacientes
     public void verListaDePacientes() {
         for (Paciente paciente : pacientes)  {
             System.out.println(paciente);
@@ -147,13 +138,11 @@ public class GestionMedico {
         }
     }
 
-    // Agregar paciente (Medico) a la lista
     public void agregarPaciente(Medico paciente) {
         pacientes.add(paciente);
         System.out.println("Paciente agregado correctamente.");
     }
 
-    // Obtener médico por su RUT
     public Medico obtenerMedicoPorRut(String rut) {
         for (Paciente paciente : pacientes) {
             if (paciente instanceof Medico && paciente.getRut().equals(rut)) {

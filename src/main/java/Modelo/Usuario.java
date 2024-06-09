@@ -5,13 +5,23 @@ public class Usuario {
     private String contrasena;
 
     public Usuario(String rut, String contrasena) {
-        this.rut = rut;
-        this.contrasena = contrasena;
+        try {
+            this.rut = rut;
+            this.contrasena = contrasena;
+        } catch (Exception e) {
+            System.err.println("Error al crear el usuario: " + e.getMessage());
+        }
     }
 
     public boolean verificarContrasena(String contrasena) {
-        return this.contrasena.equals(contrasena);
+        try {
+            return this.contrasena.equals(contrasena);
+        } catch (Exception e) {
+            System.err.println("Error al verificar la contraseña: " + e.getMessage());
+            return false;
+        }
     }
+
 
     // Getters
     public String getRut() {

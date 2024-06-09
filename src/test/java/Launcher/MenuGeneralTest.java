@@ -7,45 +7,44 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 
-class MenuMedicoTest {
+public class MenuGeneralTest {
 
     @Test
     void mostrarMenu_OpcionSalir() {
-        String input = "7\n"; 
+        // Arrange
+        String input = "3\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         Scanner scanner = new Scanner(System.in);
 
-        MenuMedico menuMedico = new MenuMedico(scanner, null);
+        MenuGeneral menuGeneral = new MenuGeneral(scanner, null, null);
 
-        menuMedico.mostrarMenu();
+        menuGeneral.mostrarMenu();
 
     }
 
     @Test
-    void mostrarMenu_OpcionVerPacientes() {
-        String input = "1\n7\n"; // Simula la entrada del usuario seleccionando la opción "Ver pacientes" y luego "Salir"
+    void mostrarMenu_OpcionMedico() {
+        String input = "1\n3\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         Scanner scanner = new Scanner(System.in);
 
-        MenuMedico menuMedico = new MenuMedico(scanner, null);
+        MenuGeneral menuGeneral = new MenuGeneral(scanner, null, null);
 
-        menuMedico.mostrarMenu();
+        menuGeneral.mostrarMenu();
 
     }
 
     @Test
-    void mostrarMenu_OpcionAgregarPaciente() {
-        String input = "2\n7\n";
+    void mostrarMenu_OpcionPaciente() {
+
+        String input = "2\n3\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         Scanner scanner = new Scanner(System.in);
 
-        MenuMedico menuMedico = new MenuMedico(scanner, null);
-
-        menuMedico.mostrarMenu();
+        MenuGeneral menuGeneral = new MenuGeneral(scanner, null, null);
 
     }
-
 }

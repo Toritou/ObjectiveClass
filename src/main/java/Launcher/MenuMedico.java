@@ -25,7 +25,7 @@ public class MenuMedico {
             System.out.println("7. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea después de nextInt
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:

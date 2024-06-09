@@ -16,9 +16,9 @@ public class CSVGenerator {
 
     public static void generatePacientesCSV(String fileName, List<Paciente> pacientes) {
         try (FileWriter writer = new FileWriter(fileName)) {
-            // Escribir encabezados
+
             writer.append("Nombre Completo,RUT,Edad,Fecha de Nacimiento,Tipo de Sangre,Peso,Estado Civil,Domicilio,Enfermedades,Alergias,Medicamentos,Cirugias,Otros,Ficha Médica\n");
-            // Escribir datos de pacientes
+
             for (Paciente paciente : pacientes) {
                 writer.append(String.join(",",
                         safeString(paciente.getNombreCompleto()),
@@ -47,7 +47,7 @@ public class CSVGenerator {
         try (FileWriter writer = new FileWriter(fileName)) {
             // Escribir encabezados
             writer.append("Nombre,Especialidad,Hospital,RUT,Pacientes\n");
-            // Escribir datos de médicos
+
             for (Medico medico : medicos) {
                 writer.append(String.join(",",
                         safeString(medico.getNombreCompleto()),
@@ -64,7 +64,7 @@ public class CSVGenerator {
 
     public static void generateUsuariosCSV(String fileName, List<Usuario> usuarios) {
         try (FileWriter writer = new FileWriter(fileName)) {
-            // Escribir encabezados
+
             writer.append("RUT,Contraseña\n");
 
             for (Usuario usuario : usuarios) {
