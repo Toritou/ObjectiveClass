@@ -32,4 +32,11 @@ public class Usuario {
         this.rut = rut;
     }
 
+    public void setContrasena(String nuevaContrasena) {
+        this.contrasena = nuevaContrasena;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
 }
