@@ -2,6 +2,13 @@ package Launcher;
 
 import Controlador.AdministradorSistema;
 import Modelo.Paciente;
+import com.toedter.calendar.JDateChooser;
+
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MenuAdministrador {
@@ -74,9 +81,37 @@ public class MenuAdministrador {
         Paciente paciente = buscarPaciente(rut);
 
         if (paciente != null) {
-            System.out.print("Ingrese la descripción de la cita: ");
-            String descripcion = scanner.nextLine();
-            administradorSistema.agendarCita(paciente, descripcion);
+            JDateChooser dateChooser = new JDateChooser();
+            dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+
+            JFrame frame = new JFrame("Seleccione la Fecha y Hora");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.getContentPane().add(dateChooser);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    Date selectedDate = dateChooser.getDate();
+                    if (selectedDate != null) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        String fechaHora = sdf.format(selectedDate);
+
+                        String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
+                        if (descripcion != null && !descripcion.trim().isEmpty()) {
+                            administradorSistema.agendarCita(paciente, fechaHora, descripcion);
+                            System.out.println("Cita agendada correctamente.");
+                        } else {
+                            System.out.println("Descripción no válida.");
+                        }
+                    } else {
+                        System.out.println("No se seleccionó ninguna fecha.");
+                    }
+                }
+            });
+
         } else {
             System.out.println("Paciente no encontrado.");
         }
@@ -93,9 +128,37 @@ public class MenuAdministrador {
             Paciente paciente = buscarPaciente(rut);
 
             if (paciente != null) {
-                System.out.print("Ingrese la nueva descripción de la cita: ");
-                String descripcion = scanner.nextLine();
-                administradorSistema.modificarCita(indice, paciente, descripcion);
+                JDateChooser dateChooser = new JDateChooser();
+                dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+
+                JFrame frame = new JFrame("Seleccione la Nueva Fecha y Hora");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.getContentPane().add(dateChooser);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        Date selectedDate = dateChooser.getDate();
+                        if (selectedDate != null) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            String fechaHora = sdf.format(selectedDate);
+
+                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
+                            if (descripcion != null && !descripcion.trim().isEmpty()) {
+                                administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
+                                System.out.println("Cita modificada correctamente.");
+                            } else {
+                                System.out.println("Descripción no válida.");
+                            }
+                        } else {
+                            System.out.println("No se seleccionó ninguna fecha.");
+                        }
+                    }
+                });
+
             } else {
                 System.out.println("Paciente no encontrado.");
             }
@@ -111,6 +174,7 @@ public class MenuAdministrador {
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             administradorSistema.eliminarCita(indice);
+            System.out.println("Cita eliminada correctamente.");
         } else {
             System.out.println("Índice de cita fuera de rango.");
         }
@@ -124,10 +188,15 @@ public class MenuAdministrador {
         if (paciente == null) {
             System.out.print("Ingrese el nombre del paciente: ");
             String nombre = scanner.nextLine();
-            System.out.print("Ingrese la fecha de nacimiento del paciente (dd/mm/yyyy): ");
+            System.out.print("Ingrese la fecha de nacimiento del paciente (dd/MM/yyyy): ");
             String fechaNacimiento = scanner.nextLine();
             System.out.print("Ingrese el tipo de sangre del paciente: ");
             String tipoSangre = scanner.nextLine();
+            // Aquí puedes agregar otros campos necesarios para el paciente
+            administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
+            System.out.println("Paciente agregado correctamente.");
+        } else {
+            System.out.println("El paciente ya existe.");
         }
     }
 
@@ -141,7 +210,9 @@ public class MenuAdministrador {
             String nombre = scanner.nextLine();
             System.out.print("Ingrese el nuevo tipo de sangre del paciente: ");
             String tipoSangre = scanner.nextLine();
-
+            // Aquí puedes modificar otros campos necesarios para el paciente
+            administradorSistema.modificarPaciente(rut, nombre, tipoSangre);
+            System.out.println("Paciente modificado correctamente.");
         } else {
             System.out.println("Paciente no encontrado.");
         }
@@ -154,6 +225,7 @@ public class MenuAdministrador {
 
         if (paciente != null) {
             administradorSistema.eliminarPaciente(rut);
+            System.out.println("Paciente eliminado correctamente.");
         } else {
             System.out.println("Paciente no encontrado.");
         }
@@ -176,6 +248,4 @@ public class MenuAdministrador {
         }
         return null;
     }
-
-
 }

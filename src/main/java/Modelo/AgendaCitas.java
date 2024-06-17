@@ -42,6 +42,24 @@ public class AgendaCitas {
         }
     }
 
+    public void agendarCita(Paciente paciente, Date fecha, String descripcion) {
+        Cita cita = new Cita(paciente, fecha, descripcion);
+        citas.add(cita);
+    }
+
+    public void modificarCita(int indice, Paciente paciente, Date fecha, String descripcion) {
+        if (indice >= 0 && indice < citas.size()) {
+            Cita cita = new Cita(paciente, fecha, descripcion);
+            citas.set(indice, cita);
+        } else {
+            System.out.println("Índice de cita fuera de rango.");
+        }
+    }
+
+    public List<Cita> obtenerCitas() {
+        return citas;
+    }
+
     public static class Cita {
         private Paciente paciente;
         private Date fechaHora;

@@ -11,52 +11,37 @@ public class CSVManager {
     private static final String AGENDA_CSV = "agenda.csv";
     private static final String DELIMITER = ",";
 
-    // Metodo privado para cargar los pacientes desde el archivo CSV
     private static List<Paciente> cargarPacientes() {
         List<Paciente> pacientes = new ArrayList<>();
         File file = new File(PACIENTES_CSV);
-
-        // Verificar si el archivo existe; si no existe, crearlo
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-                System.out.println("Archivo CSV creado: " + PACIENTES_CSV);
-            } catch (IOException e) {
-                System.err.println("Error al crear el archivo CSV: " + e.getMessage());
-            }
-        } else {
-            // Leer datos de pacientes desde el archivo CSV
-            try (BufferedReader reader = new BufferedReader(new FileReader(PACIENTES_CSV))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] campos = line.split(DELIMITER);
-                    if (campos.length == 14) { // Asumiendo que hay 14 campos en cada línea del CSV
-                        Paciente paciente = new Paciente(
-                                campos[0], campos[1], campos[2], campos[3],
-                                campos[4], campos[5], campos[6], campos[7],
-                                campos[8], campos[9], campos[10], campos[11],
-                                campos[12], campos[13]
-                        );
-                        pacientes.add(paciente);
-                    } else {
-                        System.out.println("Error: formato de línea incorrecto en el archivo CSV");
-                    }
+            return pacientes;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(PACIENTES_CSV))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] campos = line.split(DELIMITER);
+                if (campos.length == 14) { // Asumiendo que hay 14 campos en cada línea del CSV
+                    Paciente paciente = new Paciente(
+                            campos[0], campos[1], campos[2], campos[3],
+                            campos[4], campos[5], campos[6], campos[7],
+                            campos[8], campos[9], campos[10], campos[11],
+                            campos[12], campos[13]
+                    );
+                    pacientes.add(paciente);
+                } else {
+                    System.out.println("Error: formato de línea incorrecto en el archivo CSV");
                 }
-            } catch (FileNotFoundException e) {
-                System.err.println("Archivo CSV no encontrado: " + e.getMessage());
-            } catch (IOException e) {
-                System.err.println("Error al leer el archivo CSV: " + e.getMessage());
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("Archivo CSV no encontrado: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo CSV: " + e.getMessage());
         }
         return pacientes;
     }
 
-    // Metodo publico para obtener la lista de pacientes
-    public static List<Paciente> getPacientes() {
-        return cargarPacientes();
-    }
-
-    // Metodo para escribir los datos de los pacientes en el archivo CSV
     public static void escribirPacientes(List<Paciente> pacientes) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PACIENTES_CSV))) {
             for (Paciente paciente : pacientes) {
@@ -82,7 +67,6 @@ public class CSVManager {
         }
     }
 
-    // Metodo para guardar las citas en el archivo de agenda
     public static void guardarAgenda(List<String> citas) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(AGENDA_CSV, true))) {
             for (String cita : citas) {
@@ -93,9 +77,31 @@ public class CSVManager {
         }
     }
 
-    public static List<Paciente> leerPacientes() {
+    public static List<String> leerAgenda() {
+        List<String> citas = new ArrayList<>();
+        File file = new File(AGENDA_CSV);
+        if (!file.exists()) {
+            return citas;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(AGENDA_CSV))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                citas.add(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Archivo CSV de agenda no encontrado: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo CSV de agenda: " + e.getMessage());
+        }
+        return citas;
+    }
+
+    public static List<Paciente> getPacientes() {
         return cargarPacientes();
     }
 
-
+    public static List<Paciente> leerPacientes() {
+        return cargarPacientes();
+    }
 }

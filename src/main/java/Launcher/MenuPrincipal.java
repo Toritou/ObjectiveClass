@@ -3,6 +3,7 @@ package Launcher;
 import Controlador.AdministradorSistema;
 import Controlador.GestionPaciente;
 import Modelo.Paciente;
+
 import java.util.Scanner;
 
 public class MenuPrincipal {
@@ -23,7 +24,7 @@ public class MenuPrincipal {
             System.out.println("=== Menú Principal ===");
             System.out.println("1. Administrador");
             System.out.println("2. Paciente");
-            System.out.println("3. Salir");
+            System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
 
             opcion = scanner.nextInt();
@@ -36,7 +37,7 @@ public class MenuPrincipal {
                 case 2:
                     mostrarMenuPacientes();
                     break;
-                case 3:
+                case 0:
                     System.out.println("Saliendo...");
                     break;
                 default:
@@ -44,7 +45,9 @@ public class MenuPrincipal {
                     break;
             }
 
-        } while (opcion != 3);
+        } while (opcion != 0);
+
+
     }
 
     private void iniciarSesionAdministrador() {

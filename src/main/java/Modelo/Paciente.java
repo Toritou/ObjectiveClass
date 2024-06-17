@@ -40,6 +40,14 @@ public class Paciente {
         this.fichaMedica = adminContrasena;
     }
 
+    public Paciente(String nombre, String rut, String fechaNacimiento, String tipoSangre) {
+        this.nombreCompleto = nombre;
+        this.rut = rut;
+        this.fechaNacimiento = fechaNacimiento;
+        this.tipoSangre = tipoSangre;
+        this.fichaMedica = "";
+    }
+
 
     // Getters y Setters
 
@@ -105,5 +113,13 @@ public class Paciente {
 
     public void agendarCita(Date selectedDate) {
         System.out.println("Cita agendada para el paciente " + this.nombreCompleto);
+    }
+
+    public void setNombre(String nombre) {
+        this.nombreCompleto = nombre;
+    }
+
+    public void setTipoSangre(String tipoSangre) {
+        this.tipoSangre = tipoSangre;
     }
 }
