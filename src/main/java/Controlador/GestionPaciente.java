@@ -2,11 +2,7 @@ package Controlador;
 
 import Modelo.Paciente;
 import csv.CSVManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GestionPaciente {
     private Map<String, Paciente> pacientes;
@@ -55,11 +51,9 @@ public class GestionPaciente {
         guardarPacientesEnCSV();
     }
 
-    // Obtener un paciente por su rut
-    public Paciente getPacientePorRut(String rut) {
-        return pacientes.get(rut);
+    public void agendarCita(Paciente pacienteActual, Date selectedDate) {
+        pacienteActual.agendarCita(selectedDate);
+        modificarInformacionPersonal(pacienteActual);
     }
-
-    // Otros métodos según sea necesario
 
 }

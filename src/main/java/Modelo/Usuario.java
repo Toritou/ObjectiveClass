@@ -13,5 +13,24 @@ public class Usuario {
         return this.contrasena.equals(contrasena);
     }
 
-    // Getters y Setters omitidos por brevedad
+    public String getRut() {
+        return rut;
+    }
+
+    public String toString() {
+        return rut;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof Usuario) {
+            Usuario usuario = (Usuario) obj;
+            return rut.equals(usuario.getRut());
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return rut.hashCode();
+    }
+
 }

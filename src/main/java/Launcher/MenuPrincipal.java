@@ -64,8 +64,9 @@ public class MenuPrincipal {
     private void mostrarMenuPacientes() {
         System.out.println("1. Iniciar sesión");
         System.out.println("2. Registrarse");
-        System.out.println("3. Volver");
+        System.out.println("0. Volver al menú principal");
         System.out.print("Ingrese su opción: ");
+
         int opcion = scanner.nextInt();
         scanner.nextLine(); // Consume el salto de línea
 
@@ -76,7 +77,7 @@ public class MenuPrincipal {
             case 2:
                 registrarPaciente();
                 break;
-            case 3:
+            case 0:
                 System.out.println("Volviendo al menú principal...");
                 break;
             default:
@@ -93,10 +94,8 @@ public class MenuPrincipal {
 
         Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
         if (paciente != null) {
-            System.out.println("Sesión iniciada como " + paciente.getNombreCompleto());
             MenuPaciente menuPacientes = new MenuPaciente(paciente);
             menuPacientes.mostrarMenu();
-
         } else {
             System.out.println("Credenciales incorrectas.");
         }
