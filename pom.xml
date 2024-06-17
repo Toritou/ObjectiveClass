@@ -28,6 +28,12 @@
             <artifactId>jcalendar</artifactId>
             <version>1.4</version> <!-- Asegúrate de usar la versión más reciente -->
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>22</maven.compiler.source>

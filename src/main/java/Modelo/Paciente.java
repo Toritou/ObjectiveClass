@@ -33,6 +33,12 @@ public class Paciente {
         this.fichaMedica = fichaMedica;
     }
 
+    public Paciente(String adminRut, String adminContrasena) {
+        this.rut = adminRut;
+        this.fichaMedica = adminContrasena;
+    }
+
+
     // Getters y Setters
 
     public String getNombreCompleto() {
@@ -147,25 +153,35 @@ public class Paciente {
         this.fichaMedica = fichaMedica;
     }
 
-    // Método para verificar la contraseña
-    public boolean verificarContrasena(String contrasena) {
-        return this.fichaMedica != null && this.fichaMedica.equals(contrasena);
-    }
-
     @Override
     public String toString() {
-        return "Nombre completo: " + nombreCompleto +
-                "\nRUT: " + rut +
-                "\nEdad: " + edad +
-                "\nFecha de nacimiento: " + fechaNacimiento +
-                "\nTipo de sangre: " + tipoSangre +
-                "\nPeso: " + peso +
-                "\nEstado civil: " + estadoCivil +
-                "\nDomicilio: " + domicilio +
-                "\nEnfermedades: " + enfermedades +
-                "\nAlergias: " + alergias +
-                "\nMedicamentos: " + medicamentos +
-                "\nCirugías: " + cirugias +
-                "\nOtros: " + otros;
+        return "Paciente{" +
+                "nombreCompleto='" + nombreCompleto + '\'' +
+                ", rut='" + rut + '\'' +
+                ", edad='" + edad + '\'' +
+                ", fechaNacimiento='" + fechaNacimiento + '\'' +
+                ", tipoSangre='" + tipoSangre + '\'' +
+                ", peso='" + peso + '\'' +
+                ", estadoCivil='" + estadoCivil + '\'' +
+                ", domicilio='" + domicilio + '\'' +
+                ", enfermedades='" + enfermedades + '\'' +
+                ", alergias='" + alergias + '\'' +
+                ", medicamentos='" + medicamentos + '\'' +
+                ", cirugias='" + cirugias + '\'' +
+                ", otros='" + otros + '\'' +
+                ", fichaMedica='" + fichaMedica + '\'' +
+                '}';
+    }
+
+    public boolean verificarContrasena(String contrasena) {
+        return this.fichaMedica.equals(contrasena);
+    }
+
+    public CharSequence getContrasena() {
+        return this.fichaMedica;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.fichaMedica = contrasena;
     }
 }

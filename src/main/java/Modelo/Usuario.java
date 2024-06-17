@@ -5,38 +5,13 @@ public class Usuario {
     private String contrasena;
 
     public Usuario(String rut, String contrasena) {
-        try {
-            this.rut = rut;
-            this.contrasena = contrasena;
-        } catch (Exception e) {
-            System.err.println("Error al crear el usuario: " + e.getMessage());
-        }
+        this.rut = rut;
+        this.contrasena = contrasena;
     }
 
     public boolean verificarContrasena(String contrasena) {
-        try {
-            return this.contrasena.equals(contrasena);
-        } catch (Exception e) {
-            System.err.println("Error al verificar la contraseña: " + e.getMessage());
-            return false;
-        }
+        return this.contrasena.equals(contrasena);
     }
 
-    // Getters
-    public String getRut() {
-        return rut;
-    }
-
-    // Setters
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
-
-    public void setContrasena(String nuevaContrasena) {
-        this.contrasena = nuevaContrasena;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
+    // Getters y Setters omitidos por brevedad
 }
