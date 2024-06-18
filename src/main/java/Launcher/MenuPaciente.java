@@ -105,19 +105,25 @@ public class MenuPaciente {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        // Mostrar mensaje de confirmación
-                        int confirmacion = JOptionPane.showConfirmDialog(null,
-                                "¿Está seguro que desea seleccionar esta fecha?",
-                                "Confirmación de Selección",
-                                JOptionPane.YES_NO_OPTION);
+                    Date currentDate = new Date(); // Fecha y hora actual
 
-                        if (confirmacion == JOptionPane.YES_OPTION) {
-                            System.out.println("Cita agendada para: " + selectedDate);
-                            gestionPaciente.agendarCita(pacienteActual, selectedDate);
-                            frame.dispose(); // Cerrar la ventana después de agendar la cita
+                    if (selectedDate != null) {
+                        if (selectedDate.before(currentDate)) {
+                            JOptionPane.showMessageDialog(null, "No se puede seleccionar una fecha anterior a la actual. Escoja nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            // No hacer nada si se cancela la selección
+                            // Mostrar mensaje de confirmación
+                            int confirmacion = JOptionPane.showConfirmDialog(null,
+                                    "¿Está seguro que desea seleccionar esta fecha?",
+                                    "Confirmación de Selección",
+                                    JOptionPane.YES_NO_OPTION);
+
+                            if (confirmacion == JOptionPane.YES_OPTION) {
+                                System.out.println("Cita agendada para: " + selectedDate);
+                                gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                                frame.dispose(); // Cerrar la ventana después de agendar la cita
+                            } else {
+                                // No hacer nada si se cancela la selección
+                            }
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
