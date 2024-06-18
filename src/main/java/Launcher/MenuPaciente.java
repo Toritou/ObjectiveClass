@@ -104,8 +104,14 @@ public class MenuPaciente {
                     super.windowClosed(e);
                     Date selectedDate = dateChooser.getDate();
                     if (selectedDate != null) {
-                        System.out.println("Cita agendada para: " + selectedDate);
-                        gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                        // Validar si la fecha seleccionada es anterior a la fecha actual
+                        Date currentDate = new Date();
+                        if (selectedDate.before(currentDate)) {
+                            JOptionPane.showMessageDialog(null, "No se puede seleccionar una fecha anterior a la actual. Por favor, elija nuevamente.", "Fecha Inválida", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            System.out.println("Cita agendada para: " + selectedDate);
+                            gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                        }
                     } else {
                         System.out.println("No se seleccionó ninguna fecha.");
                     }
