@@ -15,7 +15,7 @@ public class MenuPrincipal {
     public MenuPrincipal() {
         gestionPaciente = new GestionPaciente();
         administradorSistema = new AdministradorSistema();
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in); 
     }
 
     public void mostrarMenu() {
