@@ -42,11 +42,8 @@ public class MenuPaciente {
         do {
             System.out.println("=== Menú del Paciente ===");
             System.out.println("1. Ver información personal");
-            System.out.println("2. Modificar información personal");
-            System.out.println("3. Ver ficha médica");
-            System.out.println("4. Modificar ficha médica");
-            System.out.println("5. Agendar hora");
-            System.out.println("6. Salir");
+            System.out.println("2. Agendar hora");
+            System.out.println("3. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
@@ -56,21 +53,15 @@ public class MenuPaciente {
                     verInformacionPersonal();
                     break;
                 case 2:
-                    modificarInformacionPersonal();
-                    break;
-                case 3:
-                    verFichaMedica();
-                    break;
-                case 5:
                     agendarHora();
                     break;
-                case 6:
+                case 3:
                     System.out.println("Saliendo del menú...");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente nuevamente.");
             }
-        } while (opcion != 6);
+        } while (opcion != 3);
     }
 
     private void verInformacionPersonal() {
@@ -90,22 +81,6 @@ public class MenuPaciente {
             System.out.println("Cirugías: " + pacienteActual.getCirugias());
             System.out.println("Otros: " + pacienteActual.getOtros());
             System.out.println("Ficha Médica: " + pacienteActual.getFichaMedica());
-        } else {
-            System.out.println("Debe iniciar sesión primero.");
-        }
-    }
-
-    private void modificarInformacionPersonal() {
-        if (pacienteActual != null) {
-            gestionPaciente.modificarInformacionPersonal(pacienteActual);
-        } else {
-            System.out.println("Debe iniciar sesión primero.");
-        }
-    }
-
-    private void verFichaMedica() {
-        if (pacienteActual != null) {
-            System.out.println(pacienteActual.getFichaMedica());
         } else {
             System.out.println("Debe iniciar sesión primero.");
         }
@@ -139,5 +114,14 @@ public class MenuPaciente {
         } else {
             System.out.println("Debe iniciar sesión primero.");
         }
+    }
+
+    public static void main(String[] args) {
+        // Ejemplo de uso:
+        Paciente paciente = new Paciente("Juan Perez", "12345678-9", "25", "01/01/1990",
+                "O+", "70 kg", "Soltero", "Calle 123", "Ninguna", "Ninguna", "", "", "", "");
+
+        MenuPaciente menu = new MenuPaciente(paciente);
+        menu.mostrarMenu();
     }
 }
