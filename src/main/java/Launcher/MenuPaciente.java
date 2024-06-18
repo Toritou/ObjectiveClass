@@ -75,7 +75,21 @@ public class MenuPaciente {
 
     private void verInformacionPersonal() {
         if (pacienteActual != null) {
-            System.out.println(pacienteActual.toString());
+            System.out.println("=== Información Personal ===");
+            System.out.println("Nombre Completo: " + pacienteActual.getNombreCompleto());
+            System.out.println("RUT: " + pacienteActual.getRut());
+            System.out.println("Edad: " + pacienteActual.getEdad());
+            System.out.println("Fecha de Nacimiento: " + pacienteActual.getFechaNacimiento());
+            System.out.println("Tipo de Sangre: " + pacienteActual.getTipoSangre());
+            System.out.println("Peso: " + pacienteActual.getPeso());
+            System.out.println("Estado Civil: " + pacienteActual.getEstadoCivil());
+            System.out.println("Domicilio: " + pacienteActual.getDomicilio());
+            System.out.println("Enfermedades: " + pacienteActual.getEnfermedades());
+            System.out.println("Alergias: " + pacienteActual.getAlergias());
+            System.out.println("Medicamentos: " + pacienteActual.getMedicamentos());
+            System.out.println("Cirugías: " + pacienteActual.getCirugias());
+            System.out.println("Otros: " + pacienteActual.getOtros());
+            System.out.println("Ficha Médica: " + pacienteActual.getFichaMedica());
         } else {
             System.out.println("Debe iniciar sesión primero.");
         }
