@@ -16,7 +16,7 @@ public class AdministradorSistema {
     private AgendaCitas agendaCitas;
 
     public AdministradorSistema() {
-        listaPacientes = CSVManager.getPacientes();
+        listaPacientes = CSVManager.leerPacientes(); // Corregido: usar leerPacientes() en lugar de cargarPacientes()
         agendaCitas = new AgendaCitas();
         cargarAgenda();
     }
@@ -118,7 +118,7 @@ public class AdministradorSistema {
                     cita.getDescripcion();
             citas.add(linea);
         }
-        CSVManager.guardarAgenda(Collections.singletonList(String.valueOf(citas)));
+        CSVManager.guardarAgenda(citas);
     }
 
     private void guardarPacientes() {

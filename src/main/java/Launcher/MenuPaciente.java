@@ -3,10 +3,13 @@ package Launcher;
 import Controlador.GestionPaciente;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
+import csv.CSVManager;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -105,25 +108,20 @@ public class MenuPaciente {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Date selectedDate = dateChooser.getDate();
-                    Date currentDate = new Date(); // Fecha y hora actual
-
                     if (selectedDate != null) {
-                        if (selectedDate.before(currentDate)) {
-                            JOptionPane.showMessageDialog(null, "No se puede seleccionar una fecha anterior a la actual. Escoja nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            // Mostrar mensaje de confirmación
-                            int confirmacion = JOptionPane.showConfirmDialog(null,
-                                    "¿Está seguro que desea seleccionar esta fecha?",
-                                    "Confirmación de Selección",
-                                    JOptionPane.YES_NO_OPTION);
+                        // Mostrar mensaje de confirmación
+                        int confirmacion = JOptionPane.showConfirmDialog(null,
+                                "¿Está seguro que desea seleccionar esta fecha?",
+                                "Confirmación de Selección",
+                                JOptionPane.YES_NO_OPTION);
 
-                            if (confirmacion == JOptionPane.YES_OPTION) {
-                                System.out.println("Cita agendada para: " + selectedDate);
-                                gestionPaciente.agendarCita(pacienteActual, selectedDate);
-                                frame.dispose(); // Cerrar la ventana después de agendar la cita
-                            } else {
-                                // No hacer nada si se cancela la selección
-                            }
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            System.out.println("Cita agendada para: " + selectedDate);
+                            gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                            CSVManager.guardarAgenda(pacienteActual, selectedDate); // Llamar al método correcto
+                            frame.dispose(); // Cerrar la ventana después de agendar la cita
+                        } else {
+                            // No hacer nada si se cancela la selección
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);

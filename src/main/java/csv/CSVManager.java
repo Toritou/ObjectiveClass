@@ -3,7 +3,10 @@ package csv;
 import Modelo.Paciente;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class CSVManager {
@@ -11,33 +14,21 @@ public class CSVManager {
     private static final String AGENDA_CSV = "agenda.csv";
     private static final String DELIMITER = ",";
 
-    private static List<Paciente> cargarPacientes() {
+    public static List<Paciente> leerPacientes() {
         List<Paciente> pacientes = new ArrayList<>();
-        File file = new File(PACIENTES_CSV);
-        if (!file.exists()) {
-            return pacientes;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(PACIENTES_CSV))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PACIENTES_CSV))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] campos = line.split(DELIMITER);
-                if (campos.length == 14) { // Asumiendo que hay 14 campos en cada línea del CSV
-                    Paciente paciente = new Paciente(
-                            campos[0], campos[1], campos[2], campos[3],
-                            campos[4], campos[5], campos[6], campos[7],
-                            campos[8], campos[9], campos[10], campos[11],
-                            campos[12], campos[13]
-                    );
+            while ((line = br.readLine()) != null) {
+                String[] datos = line.split(DELIMITER);
+                if (datos.length >= 14) { // Ajustar según la cantidad de atributos de Paciente
+                    Paciente paciente = new Paciente(datos[0], datos[1], datos[2], datos[3],
+                            datos[4], datos[5], datos[6], datos[7], datos[8],
+                            datos[9], datos[10], datos[11], datos[12], datos[13]);
                     pacientes.add(paciente);
-                } else {
-                    System.out.println("Error: formato de línea incorrecto en el archivo CSV");
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Archivo CSV no encontrado: " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo CSV: " + e.getMessage());
+            System.err.println("Error al leer el archivo CSV de pacientes: " + e.getMessage());
         }
         return pacientes;
     }
@@ -45,33 +36,33 @@ public class CSVManager {
     public static void escribirPacientes(List<Paciente> pacientes) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PACIENTES_CSV))) {
             for (Paciente paciente : pacientes) {
-                writer.println(
-                        paciente.getNombreCompleto() + DELIMITER +
-                                paciente.getRut() + DELIMITER +
-                                paciente.getEdad() + DELIMITER +
-                                paciente.getFechaNacimiento() + DELIMITER +
-                                paciente.getTipoSangre() + DELIMITER +
-                                paciente.getPeso() + DELIMITER +
-                                paciente.getEstadoCivil() + DELIMITER +
-                                paciente.getDomicilio() + DELIMITER +
-                                paciente.getEnfermedades() + DELIMITER +
-                                paciente.getAlergias() + DELIMITER +
-                                paciente.getMedicamentos() + DELIMITER +
-                                paciente.getCirugias() + DELIMITER +
-                                paciente.getOtros() + DELIMITER +
-                                paciente.getFichaMedica()
-                );
+                String linea = paciente.getNombreCompleto() + DELIMITER +
+                        paciente.getRut() + DELIMITER +
+                        paciente.getEdad() + DELIMITER +
+                        paciente.getFechaNacimiento() + DELIMITER +
+                        paciente.getTipoSangre() + DELIMITER +
+                        paciente.getPeso() + DELIMITER +
+                        paciente.getEstadoCivil() + DELIMITER +
+                        paciente.getDomicilio() + DELIMITER +
+                        paciente.getEnfermedades() + DELIMITER +
+                        paciente.getAlergias() + DELIMITER +
+                        paciente.getMedicamentos() + DELIMITER +
+                        paciente.getCirugias() + DELIMITER +
+                        paciente.getOtros() + DELIMITER +
+                        paciente.getFichaMedica();
+                writer.println(linea);
             }
         } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo CSV: " + e.getMessage());
+            System.err.println("Error al escribir en el archivo CSV de pacientes: " + e.getMessage());
         }
     }
 
-    public static void guardarAgenda(List<String> citas) {
+    public static void guardarAgenda(Paciente paciente, Date fecha) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(AGENDA_CSV, true))) {
-            for (String cita : citas) {
-                writer.println(cita);
-            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String linea = paciente.getRut() + DELIMITER +
+                    sdf.format(fecha);
+            writer.println(linea);
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo CSV de agenda: " + e.getMessage());
         }
@@ -79,29 +70,24 @@ public class CSVManager {
 
     public static List<String> leerAgenda() {
         List<String> citas = new ArrayList<>();
-        File file = new File(AGENDA_CSV);
-        if (!file.exists()) {
-            return citas;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(AGENDA_CSV))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(AGENDA_CSV))) {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 citas.add(line);
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Archivo CSV de agenda no encontrado: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("Error al leer el archivo CSV de agenda: " + e.getMessage());
         }
         return citas;
     }
 
-    public static List<Paciente> getPacientes() {
-        return cargarPacientes();
-    }
-
-    public static List<Paciente> leerPacientes() {
-        return cargarPacientes();
+    public static void guardarAgenda(List<String> citas) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(AGENDA_CSV))) {
+            for (String cita : citas) {
+                writer.println(cita);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo CSV de agenda: " + e.getMessage());
+        }
     }
 }
