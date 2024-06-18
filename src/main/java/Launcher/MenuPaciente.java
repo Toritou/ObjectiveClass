@@ -1,11 +1,10 @@
 package Launcher;
 
-import com.toedter.calendar.JDateChooser;
 import Controlador.GestionPaciente;
 import Modelo.Paciente;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
@@ -16,9 +15,10 @@ public class MenuPaciente {
     private final GestionPaciente gestionPaciente;
     private Paciente pacienteActual;
 
-    public MenuPaciente(Scanner scanner, GestionPaciente gestionPaciente) {
-        this.scanner = scanner;
-        this.gestionPaciente = gestionPaciente;
+    public MenuPaciente(Paciente paciente) {
+        this.scanner = new Scanner(System.in);
+        this.gestionPaciente = new GestionPaciente();
+        this.pacienteActual = paciente;
     }
 
     public void iniciarSesion() {
@@ -61,9 +61,6 @@ public class MenuPaciente {
                 case 3:
                     verFichaMedica();
                     break;
-                case 4:
-                    modificarFichaMedica();
-                    break;
                 case 5:
                     agendarHora();
                     break;
@@ -95,14 +92,6 @@ public class MenuPaciente {
     private void verFichaMedica() {
         if (pacienteActual != null) {
             System.out.println(pacienteActual.getFichaMedica());
-        } else {
-            System.out.println("Debe iniciar sesión primero.");
-        }
-    }
-
-    private void modificarFichaMedica() {
-        if (pacienteActual != null) {
-            gestionPaciente.modificarFichaMedica(pacienteActual);
         } else {
             System.out.println("Debe iniciar sesión primero.");
         }
