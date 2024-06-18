@@ -5,8 +5,8 @@ import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -91,29 +91,36 @@ public class MenuPaciente {
             JDateChooser dateChooser = new JDateChooser();
             dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
 
+            JButton btnAceptar = new JButton("Aceptar");
+
             JFrame frame = new JFrame("Seleccione la Fecha y Hora");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.getContentPane().add(dateChooser);
+            frame.getContentPane().add(dateChooser, "Center");
+            frame.getContentPane().add(btnAceptar, "South");
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            frame.addWindowListener(new WindowAdapter() {
+            btnAceptar.addActionListener(new ActionListener() {
                 @Override
-                public void windowClosed(WindowEvent e) {
-                    super.windowClosed(e);
+                public void actionPerformed(ActionEvent e) {
                     Date selectedDate = dateChooser.getDate();
                     if (selectedDate != null) {
-                        // Validar si la fecha seleccionada es anterior a la fecha actual
-                        Date currentDate = new Date();
-                        if (selectedDate.before(currentDate)) {
-                            JOptionPane.showMessageDialog(null, "No se puede seleccionar una fecha anterior a la actual. Por favor, elija nuevamente.", "Fecha Inválida", JOptionPane.ERROR_MESSAGE);
-                        } else {
+                        // Mostrar mensaje de confirmación
+                        int confirmacion = JOptionPane.showConfirmDialog(null,
+                                "¿Está seguro que desea seleccionar esta fecha?",
+                                "Confirmación de Selección",
+                                JOptionPane.YES_NO_OPTION);
+
+                        if (confirmacion == JOptionPane.YES_OPTION) {
                             System.out.println("Cita agendada para: " + selectedDate);
                             gestionPaciente.agendarCita(pacienteActual, selectedDate);
+                            frame.dispose(); // Cerrar la ventana después de agendar la cita
+                        } else {
+                            // No hacer nada si se cancela la selección
                         }
                     } else {
-                        System.out.println("No se seleccionó ninguna fecha.");
+                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
