@@ -4,6 +4,7 @@ import Controlador.AdministradorSistema;
 import Controlador.GestionPaciente;
 import Modelo.Paciente;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuPrincipal {
@@ -18,7 +19,7 @@ public class MenuPrincipal {
     }
 
     public void mostrarMenu() {
-        int opcion;
+        int opcion = -1;
 
         do {
             System.out.println("=== Menú Principal ===");
@@ -27,27 +28,30 @@ public class MenuPrincipal {
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
 
-            opcion = scanner.nextInt();
-            scanner.nextLine(); // Consume el salto de línea
+            try {
+                opcion = scanner.nextInt();
+                scanner.nextLine(); // Consume el salto de línea
 
-            switch (opcion) {
-                case 1:
-                    iniciarSesionAdministrador();
-                    break;
-                case 2:
-                    mostrarMenuPacientes();
-                    break;
-                case 0:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opción inválida. Intente de nuevo.");
-                    break;
+                switch (opcion) {
+                    case 1:
+                        iniciarSesionAdministrador();
+                        break;
+                    case 2:
+                        mostrarMenuPacientes();
+                        break;
+                    case 0:
+                        System.out.println("Saliendo...");
+                        break;
+                    default:
+                        System.out.println("Opción inválida. Intente de nuevo.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                scanner.nextLine(); // Consume la entrada incorrecta
             }
 
         } while (opcion != 0);
-
-
     }
 
     private void iniciarSesionAdministrador() {
@@ -70,22 +74,28 @@ public class MenuPrincipal {
         System.out.println("0. Volver al menú principal");
         System.out.print("Ingrese su opción: ");
 
-        int opcion = scanner.nextInt();
-        scanner.nextLine(); // Consume el salto de línea
+        int opcion = -1;
+        try {
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
 
-        switch (opcion) {
-            case 1:
-                iniciarSesionPaciente();
-                break;
-            case 2:
-                registrarPaciente();
-                break;
-            case 0:
-                System.out.println("Volviendo al menú principal...");
-                break;
-            default:
-                System.out.println("Opción inválida. Intente de nuevo.");
-                break;
+            switch (opcion) {
+                case 1:
+                    iniciarSesionPaciente();
+                    break;
+                case 2:
+                    registrarPaciente();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Intente de nuevo.");
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            scanner.nextLine(); // Consume la entrada incorrecta
         }
     }
 
