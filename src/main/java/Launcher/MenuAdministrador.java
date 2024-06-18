@@ -5,8 +5,8 @@ import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -35,7 +35,6 @@ public class MenuAdministrador {
             System.out.println("8. Ver lista de Pacientes");
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
-
             opcion = scanner.nextInt();
             scanner.nextLine(); // Consume el salto de línea
 
@@ -83,37 +82,49 @@ public class MenuAdministrador {
         if (paciente != null) {
             JDateChooser dateChooser = new JDateChooser();
             dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+            dateChooser.setMinSelectableDate(new Date()); // No permitir fechas anteriores a la actual
+
+            JButton btnAceptar = new JButton("Aceptar");
 
             JFrame frame = new JFrame("Seleccione la Fecha y Hora");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.getContentPane().add(dateChooser);
+            frame.getContentPane().add(dateChooser, "Center");
+            frame.getContentPane().add(btnAceptar, "South");
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            frame.addWindowListener(new WindowAdapter() {
+            btnAceptar.addActionListener(new ActionListener() {
                 @Override
-                public void windowClosed(WindowEvent e) {
+                public void actionPerformed(ActionEvent e) {
                     Date selectedDate = dateChooser.getDate();
                     if (selectedDate != null) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                        String fechaHora = sdf.format(selectedDate);
+                        int confirmacion = JOptionPane.showConfirmDialog(null,
+                                "¿Está seguro que desea seleccionar esta fecha?",
+                                "Confirmación de Selección",
+                                JOptionPane.YES_NO_OPTION);
 
-                        String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
-                        if (descripcion != null && !descripcion.trim().isEmpty()) {
-                            administradorSistema.agendarCita(paciente, fechaHora, descripcion);
-                            System.out.println("Cita agendada correctamente.");
-                        } else {
-                            System.out.println("Descripción no válida.");
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            String fechaHora = sdf.format(selectedDate);
+
+                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
+                            if (descripcion != null && !descripcion.trim().isEmpty()) {
+                                administradorSistema.agendarCita(paciente, fechaHora, descripcion);
+                                JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            frame.dispose(); // Cerrar la ventana después de agendar la cita
                         }
                     } else {
-                        System.out.println("No se seleccionó ninguna fecha.");
+                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
 
         } else {
-            System.out.println("Paciente no encontrado.");
+            JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -130,40 +141,52 @@ public class MenuAdministrador {
             if (paciente != null) {
                 JDateChooser dateChooser = new JDateChooser();
                 dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+                dateChooser.setMinSelectableDate(new Date()); // No permitir fechas anteriores a la actual
+
+                JButton btnAceptar = new JButton("Aceptar");
 
                 JFrame frame = new JFrame("Seleccione la Nueva Fecha y Hora");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.getContentPane().add(dateChooser);
+                frame.getContentPane().add(dateChooser, "Center");
+                frame.getContentPane().add(btnAceptar, "South");
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
 
-                frame.addWindowListener(new WindowAdapter() {
+                btnAceptar.addActionListener(new ActionListener() {
                     @Override
-                    public void windowClosed(WindowEvent e) {
+                    public void actionPerformed(ActionEvent e) {
                         Date selectedDate = dateChooser.getDate();
                         if (selectedDate != null) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            String fechaHora = sdf.format(selectedDate);
+                            int confirmacion = JOptionPane.showConfirmDialog(null,
+                                    "¿Está seguro que desea seleccionar esta fecha?",
+                                    "Confirmación de Selección",
+                                    JOptionPane.YES_NO_OPTION);
 
-                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
-                            if (descripcion != null && !descripcion.trim().isEmpty()) {
-                                administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
-                                System.out.println("Cita modificada correctamente.");
-                            } else {
-                                System.out.println("Descripción no válida.");
+                            if (confirmacion == JOptionPane.YES_OPTION) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                String fechaHora = sdf.format(selectedDate);
+
+                                String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
+                                if (descripcion != null && !descripcion.trim().isEmpty()) {
+                                    administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
+                                    JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
+                                } else {
+                                    JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                frame.dispose(); // Cerrar la ventana después de modificar la cita
                             }
                         } else {
-                            System.out.println("No se seleccionó ninguna fecha.");
+                            JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 });
 
             } else {
-                System.out.println("Paciente no encontrado.");
+                JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            System.out.println("Índice de cita fuera de rango.");
+            JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -174,9 +197,9 @@ public class MenuAdministrador {
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             administradorSistema.eliminarCita(indice);
-            System.out.println("Cita eliminada correctamente.");
+            JOptionPane.showMessageDialog(null, "Cita eliminada correctamente.");
         } else {
-            System.out.println("Índice de cita fuera de rango.");
+            JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -194,9 +217,9 @@ public class MenuAdministrador {
             String tipoSangre = scanner.nextLine();
             // Aquí puedes agregar otros campos necesarios para el paciente
             administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
-            System.out.println("Paciente agregado correctamente.");
+            JOptionPane.showMessageDialog(null, "Paciente agregado correctamente.");
         } else {
-            System.out.println("El paciente ya existe.");
+            JOptionPane.showMessageDialog(null, "El paciente ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -212,9 +235,9 @@ public class MenuAdministrador {
             String tipoSangre = scanner.nextLine();
             // Aquí puedes modificar otros campos necesarios para el paciente
             administradorSistema.modificarPaciente(rut, nombre, tipoSangre);
-            System.out.println("Paciente modificado correctamente.");
+            JOptionPane.showMessageDialog(null, "Paciente modificado correctamente.");
         } else {
-            System.out.println("Paciente no encontrado.");
+            JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -225,9 +248,9 @@ public class MenuAdministrador {
 
         if (paciente != null) {
             administradorSistema.eliminarPaciente(rut);
-            System.out.println("Paciente eliminado correctamente.");
+            JOptionPane.showMessageDialog(null, "Paciente eliminado correctamente.");
         } else {
-            System.out.println("Paciente no encontrado.");
+            JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
