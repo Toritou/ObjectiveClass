@@ -15,7 +15,7 @@ public class MenuPrincipal {
     public MenuPrincipal() {
         gestionPaciente = new GestionPaciente();
         administradorSistema = new AdministradorSistema();
-        scanner = new Scanner(System.in); 
+        scanner = new Scanner(System.in);
     }
 
     public void mostrarMenu() {
@@ -23,21 +23,21 @@ public class MenuPrincipal {
 
         do {
             System.out.println("=== Menú Principal ===");
-            System.out.println("1. Administrador");
-            System.out.println("2. Paciente");
+            System.out.println("1. Iniciar sesión");
+            System.out.println("2. Registrarse");
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
 
             try {
                 opcion = scanner.nextInt();
-                scanner.nextLine();
+                scanner.nextLine(); // Consumir el salto de línea después del entero
 
                 switch (opcion) {
                     case 1:
-                        iniciarSesionAdministrador();
+                        iniciarSesion();
                         break;
                     case 2:
-                        mostrarMenuPacientes();
+                        registrar();
                         break;
                     case 0:
                         System.out.println("Saliendo...");
@@ -48,96 +48,58 @@ public class MenuPrincipal {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Por favor, ingrese un número.");
-                scanner.nextLine();
+                scanner.nextLine(); // Limpiar el buffer de entrada
             }
 
         } while (opcion != 0);
     }
 
-    private void iniciarSesionAdministrador() {
-        System.out.print("Ingrese RUT de administrador: ");
-        String rut = scanner.nextLine();
-        System.out.print("Ingrese contraseña: ");
-        String contrasena = scanner.nextLine();
-
-        if (administradorSistema.iniciarSesionComoAdmin(rut, contrasena)) {
-            MenuAdministrador menuAdmin = new MenuAdministrador();
-            menuAdmin.mostrarMenu();
-        } else {
-            System.out.println("Credenciales incorrectas.");
-        }
-    }
-
-    private void mostrarMenuPacientes() {
-        System.out.println("1. Iniciar sesión");
-        System.out.println("2. Registrarse");
-        System.out.println("0. Volver al menú principal");
-        System.out.print("Ingrese su opción: ");
-
-        int opcion;
-        try {
-            opcion = scanner.nextInt();
-            scanner.nextLine(); // Consume el salto de línea
-
-            switch (opcion) {
-                case 1:
-                    iniciarSesionPaciente();
-                    break;
-                case 2:
-                    registrarPaciente();
-                    break;
-                case 0:
-                    System.out.println("Volviendo al menú principal...");
-                    break;
-                default:
-                    System.out.println("Opción inválida. Intente de nuevo.");
-                    break;
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Entrada inválida. Por favor, ingrese un número.");
-            scanner.nextLine(); // Consume la entrada incorrecta
-        }
-    }
-
-    private void iniciarSesionPaciente() {
+    private void iniciarSesion() {
         System.out.print("Ingrese RUT: ");
         String rut = scanner.nextLine();
         System.out.print("Ingrese contraseña: ");
         String contrasena = scanner.nextLine();
 
-        Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
-        if (paciente != null) {
-            MenuPaciente menuPacientes = new MenuPaciente(paciente);
-            menuPacientes.mostrarMenu();
+        // Verificar si es administrador
+        if (administradorSistema.iniciarSesionComoAdmin(rut, contrasena)) {
+            MenuAdministrador menuAdmin = new MenuAdministrador();
+            menuAdmin.mostrarMenu();
         } else {
-            System.out.println("Credenciales incorrectas.");
+            // Si no es administrador, intentar iniciar sesión como paciente
+            Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
+            if (paciente != null) {
+                MenuPaciente menuPacientes = new MenuPaciente(paciente);
+                menuPacientes.mostrarMenu();
+            } else {
+                System.out.println("Credenciales incorrectas.");
+            }
         }
     }
 
-    private void registrarPaciente() {
+    private void registrar() {
         System.out.print("Ingrese su nombre completo: ");
         String nombreCompleto = scanner.nextLine();
         System.out.print("Ingrese su RUT: ");
         String rut = scanner.nextLine();
         System.out.print("Ingrese su edad: ");
         String edad = scanner.nextLine();
-        System.out.print("Ingrese su fecha de nacimiento: ");
+        System.out.print("Ingrese su fecha de nacimiento (dd/MM/yyyy): ");
         String fechaNacimiento = scanner.nextLine();
         System.out.print("Ingrese su tipo de sangre: ");
         String tipoSangre = scanner.nextLine();
-        System.out.print("Ingrese su peso: ");
+        System.out.print("Ingrese su peso (kg): ");
         String peso = scanner.nextLine();
         System.out.print("Ingrese su estado civil: ");
         String estadoCivil = scanner.nextLine();
         System.out.print("Ingrese su domicilio: ");
         String domicilio = scanner.nextLine();
-        System.out.print("Ingrese sus enfermedades: ");
+        System.out.print("Ingrese sus enfermedades (separadas por comas): ");
         String enfermedades = scanner.nextLine();
-        System.out.print("Ingrese sus alergias: ");
+        System.out.print("Ingrese sus alergias (separadas por comas): ");
         String alergias = scanner.nextLine();
-        System.out.print("Ingrese sus medicamentos: ");
+        System.out.print("Ingrese sus medicamentos (separados por comas): ");
         String medicamentos = scanner.nextLine();
-        System.out.print("Ingrese sus cirugías: ");
+        System.out.print("Ingrese sus cirugías (separadas por comas): ");
         String cirugias = scanner.nextLine();
         System.out.print("Ingrese otros detalles: ");
         String otros = scanner.nextLine();
