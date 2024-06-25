@@ -48,7 +48,7 @@ public class MenuPaciente {
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // Consumir el salto de línea después de leer la opción
 
             switch (opcion) {
                 case 1:
@@ -69,7 +69,7 @@ public class MenuPaciente {
                 default:
                     System.out.println("Opción no válida. Intente nuevamente.");
             }
-        } while (opcion != 4);
+        } while (opcion != 0);
     }
 
     private void verInformacionPersonal() {
@@ -155,6 +155,7 @@ public class MenuPaciente {
         try (BufferedReader br = new BufferedReader(new FileReader("agenda.csv"))) {
             String line;
             System.out.println("=== Agenda del Paciente ===");
+            int count = 1;
             while ((line = br.readLine()) != null) {
                 String[] datos = line.split(",");
                 if (datos.length >= 4 && datos[0].equals(pacienteActual.getRut())) {
@@ -162,12 +163,16 @@ public class MenuPaciente {
                     Date fechaHora = sdf.parse(datos[1]);
                     String nombrePaciente = datos[2];
                     String detalleHora = datos[3];
-                    System.out.println("- Rut: " + datos[0]);
+                    System.out.println("- Cita número " + count);
                     System.out.println("  Fecha y Hora: " + sdf.format(fechaHora));
                     System.out.println("  Nombre del Paciente: " + nombrePaciente);
                     System.out.println("  Detalle de la Hora: " + detalleHora);
                     System.out.println();
+                    count++;
                 }
+            }
+            if (count == 1) {
+                System.out.println("No hay citas agendadas.");
             }
         } catch (IOException | java.text.ParseException e) {
             System.err.println("Error al leer la agenda del paciente: " + e.getMessage());
@@ -177,17 +182,54 @@ public class MenuPaciente {
     private void eliminarHora() {
         if (pacienteActual != null) {
             System.out.println("=== Eliminar Hora ===");
-            System.out.print("Ingrese la fecha y hora a eliminar (dd/MM/yyyy HH:mm): ");
-            String fechaHoraEliminar = scanner.nextLine();
+            System.out.print("Ingrese el número de la cita a eliminar: ");
+            int numeroCita = scanner.nextInt();
+            scanner.nextLine(); // Consumir el salto de línea después de leer el número de cita
 
-            boolean citaEliminada = gestionPaciente.eliminarCita(pacienteActual, fechaHoraEliminar);
+            eliminarCita(pacienteActual, numeroCita);
+        } else {
+            System.out.println("Debe iniciar sesión primero.");
+        }
+    }
+
+    private void eliminarCita(Paciente paciente, int numeroCita) {
+        try (BufferedReader br = new BufferedReader(new FileReader("agenda.csv"));
+             PrintWriter pw = new PrintWriter(new FileWriter("citasborradas.csv"))) {
+
+            String line;
+            int count = 1;
+            boolean citaEliminada = false;
+            while ((line = br.readLine()) != null) {
+                String[] datos = line.split(",");
+                if (datos.length >= 4 && datos[0].equals(paciente.getRut())) {
+                    if (count == numeroCita) {
+                        citaEliminada = true;
+                    } else {
+                        pw.println(line);
+                    }
+                    count++;
+                } else {
+                    pw.println(line);
+                }
+            }
+
             if (citaEliminada) {
                 System.out.println("Cita eliminada correctamente.");
             } else {
-                System.out.println("No se encontró ninguna cita con esa fecha y hora.");
+                System.out.println("No se encontró ninguna cita con el número especificado.");
             }
+
+        } catch (IOException e) {
+            System.err.println("Error al eliminar la cita: " + e.getMessage());
+        }
+
+        // Renombrar el archivo temporal al original
+        File oldFile = new File("agenda.csv");
+        File newFile = new File("citasborradas.csv");
+        if (newFile.renameTo(oldFile)) {
+            System.out.println("Archivo de agenda actualizado correctamente.");
         } else {
-            System.out.println("Debe iniciar sesión primero.");
+            System.err.println("No se pudo actualizar el archivo de agenda.");
         }
     }
 }
