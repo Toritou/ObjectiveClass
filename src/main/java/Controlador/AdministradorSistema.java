@@ -16,7 +16,7 @@ public class AdministradorSistema {
     private AgendaCitas agendaCitas;
 
     public AdministradorSistema() {
-        listaPacientes = CSVManager.leerPacientes(); // Corregido: usar leerPacientes() en lugar de cargarPacientes()
+        listaPacientes = CSVManager.leerPacientes();
         agendaCitas = new AgendaCitas();
         cargarAgenda();
     }
@@ -88,7 +88,6 @@ public class AdministradorSistema {
     }
 
     private void cargarAgenda() {
-        // Implementación para cargar la agenda desde archivo CSV
         List<String> citas = CSVManager.leerAgenda();
         for (String cita : citas) {
             String[] partes = cita.split(",");
@@ -99,7 +98,7 @@ public class AdministradorSistema {
                 String descripcion = partes[3];
                 Paciente paciente = buscarPaciente(rut);
                 if (paciente == null) {
-                    paciente = new Paciente(nombre, rut, "", ""); // Ajustar según la estructura de Paciente
+                    paciente = new Paciente(nombre, rut, "", "");
                     listaPacientes.add(paciente);
                 }
                 agendarCita(paciente, fechaHora, descripcion);
@@ -108,7 +107,6 @@ public class AdministradorSistema {
     }
 
     private void guardarAgenda() {
-        // Implementación para guardar la agenda en archivo CSV
         List<String> citas = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         for (AgendaCitas.Cita cita : agendaCitas.obtenerCitas()) {
@@ -122,7 +120,6 @@ public class AdministradorSistema {
     }
 
     private void guardarPacientes() {
-        // Implementación para guardar los pacientes en archivo CSV
         CSVManager.escribirPacientes(listaPacientes);
     }
 

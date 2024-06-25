@@ -11,34 +11,12 @@ public class AgendaCitas {
         this.citas = new ArrayList<>();
     }
 
-    public List<Cita> getCitas() {
-        return citas;
-    }
-
-    public void agregarCita(Cita cita) {
-        citas.add(cita);
-    }
-
-    public void modificarCita(int indice, Cita nuevaCita) {
-        if (indice >= 0 && indice < citas.size()) {
-            citas.set(indice, nuevaCita);
-        } else {
-            System.out.println("Índice de cita fuera de rango.");
-        }
-    }
 
     public void eliminarCita(int indice) {
         if (indice >= 0 && indice < citas.size()) {
             citas.remove(indice);
         } else {
             System.out.println("Índice de cita fuera de rango.");
-        }
-    }
-
-    public void verAgenda() {
-        System.out.println("=== Agenda de Citas ===");
-        for (int i = 0; i < citas.size(); i++) {
-            System.out.println((i + 1) + ". " + citas.get(i));
         }
     }
 

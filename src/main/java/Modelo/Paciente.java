@@ -1,6 +1,8 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Paciente {
     private String nombreCompleto;
@@ -17,6 +19,7 @@ public class Paciente {
     private String cirugias;
     private String otros;
     private final String fichaMedica;
+    private List<Date> citas; // Nueva lista para almacenar las citas del paciente
 
     public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
         this.nombreCompleto = nombreCompleto;
@@ -33,11 +36,13 @@ public class Paciente {
         this.cirugias = cirugias;
         this.otros = otros;
         this.fichaMedica = fichaMedica;
+        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
     }
 
     public Paciente(String adminRut, String adminContrasena) {
         this.rut = adminRut;
         this.fichaMedica = adminContrasena;
+        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
     }
 
     public Paciente(String nombre, String rut, String fechaNacimiento, String tipoSangre) {
@@ -46,8 +51,8 @@ public class Paciente {
         this.fechaNacimiento = fechaNacimiento;
         this.tipoSangre = tipoSangre;
         this.fichaMedica = "";
+        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
     }
-
 
     // Getters y Setters
 
@@ -111,15 +116,19 @@ public class Paciente {
         return this.fichaMedica.equals(contrasena);
     }
 
-    public void agendarCita(Date selectedDate) {
-        System.out.println("Cita agendada para el paciente " + this.nombreCompleto);
-    }
-
     public void setNombre(String nombre) {
         this.nombreCompleto = nombre;
     }
 
     public void setTipoSangre(String tipoSangre) {
         this.tipoSangre = tipoSangre;
+    }
+
+    public List<Date> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(List<Date> citas) {
+        this.citas = citas;
     }
 }

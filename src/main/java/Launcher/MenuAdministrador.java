@@ -115,7 +115,7 @@ public class MenuAdministrador {
                             } else {
                                 JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
-                            frame.dispose(); // Cerrar la ventana después de agendar la cita
+                            frame.dispose();
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -131,7 +131,7 @@ public class MenuAdministrador {
     private void modificarHora() {
         System.out.print("Ingrese el número de la cita a modificar: ");
         int indice = scanner.nextInt();
-        scanner.nextLine(); // Consume el salto de línea
+        scanner.nextLine();
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             System.out.print("Ingrese el nuevo Rut del paciente: ");
@@ -141,7 +141,7 @@ public class MenuAdministrador {
             if (paciente != null) {
                 JDateChooser dateChooser = new JDateChooser();
                 dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
-                dateChooser.setMinSelectableDate(new Date()); // No permitir fechas anteriores a la actual
+                dateChooser.setMinSelectableDate(new Date());
 
                 JButton btnAceptar = new JButton("Aceptar");
 
@@ -174,7 +174,7 @@ public class MenuAdministrador {
                                 } else {
                                     JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
-                                frame.dispose(); // Cerrar la ventana después de modificar la cita
+                                frame.dispose();
                             }
                         } else {
                             JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -215,7 +215,6 @@ public class MenuAdministrador {
             String fechaNacimiento = scanner.nextLine();
             System.out.print("Ingrese el tipo de sangre del paciente: ");
             String tipoSangre = scanner.nextLine();
-            // Aquí puedes agregar otros campos necesarios para el paciente
             administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
             JOptionPane.showMessageDialog(null, "Paciente agregado correctamente.");
         } else {
@@ -233,7 +232,6 @@ public class MenuAdministrador {
             String nombre = scanner.nextLine();
             System.out.print("Ingrese el nuevo tipo de sangre del paciente: ");
             String tipoSangre = scanner.nextLine();
-            // Aquí puedes modificar otros campos necesarios para el paciente
             administradorSistema.modificarPaciente(rut, nombre, tipoSangre);
             JOptionPane.showMessageDialog(null, "Paciente modificado correctamente.");
         } else {

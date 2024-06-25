@@ -30,7 +30,7 @@ public class MenuPrincipal {
 
             try {
                 opcion = scanner.nextInt();
-                scanner.nextLine(); // Consume el salto de línea
+                scanner.nextLine();
 
                 switch (opcion) {
                     case 1:
@@ -48,7 +48,7 @@ public class MenuPrincipal {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Por favor, ingrese un número.");
-                scanner.nextLine(); // Consume la entrada incorrecta
+                scanner.nextLine();
             }
 
         } while (opcion != 0);

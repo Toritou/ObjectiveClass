@@ -3,16 +3,14 @@ package csv;
 import Modelo.Paciente;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class CSVManager {
     private static final String PACIENTES_CSV = "pacientes.csv";
     private static final String AGENDA_CSV = "agenda.csv";
-    private static final String DELIMITER = ",";
+    public static final String DELIMITER = ",";
+
 
     public static List<Paciente> leerPacientes() {
         List<Paciente> pacientes = new ArrayList<>();
@@ -20,7 +18,7 @@ public class CSVManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] datos = line.split(DELIMITER);
-                if (datos.length >= 14) { // Ajustar según la cantidad de atributos de Paciente
+                if (datos.length >= 14) {
                     Paciente paciente = new Paciente(datos[0], datos[1], datos[2], datos[3],
                             datos[4], datos[5], datos[6], datos[7], datos[8],
                             datos[9], datos[10], datos[11], datos[12], datos[13]);
@@ -54,17 +52,6 @@ public class CSVManager {
             }
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo CSV de pacientes: " + e.getMessage());
-        }
-    }
-
-    public static void guardarAgenda(Paciente paciente, Date fecha) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(AGENDA_CSV, true))) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            String linea = paciente.getRut() + DELIMITER +
-                    sdf.format(fecha);
-            writer.println(linea);
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo CSV de agenda: " + e.getMessage());
         }
     }
 
