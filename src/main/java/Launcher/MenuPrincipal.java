@@ -8,9 +8,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuPrincipal {
-    private GestionPaciente gestionPaciente;
-    private AdministradorSistema administradorSistema;
-    private Scanner scanner;
+    private final GestionPaciente gestionPaciente;
+    private final AdministradorSistema administradorSistema;
+    private final Scanner scanner;
 
     public MenuPrincipal() {
         gestionPaciente = new GestionPaciente();
@@ -74,7 +74,7 @@ public class MenuPrincipal {
         System.out.println("0. Volver al menú principal");
         System.out.print("Ingrese su opción: ");
 
-        int opcion = -1;
+        int opcion;
         try {
             opcion = scanner.nextInt();
             scanner.nextLine(); // Consume el salto de línea

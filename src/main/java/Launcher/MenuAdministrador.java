@@ -5,15 +5,13 @@ import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
 public class MenuAdministrador {
-    private Scanner scanner;
-    private AdministradorSistema administradorSistema;
+    private final Scanner scanner;
+    private final AdministradorSistema administradorSistema;
 
     public MenuAdministrador() {
         scanner = new Scanner(System.in);
@@ -94,32 +92,29 @@ public class MenuAdministrador {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            btnAceptar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        int confirmacion = JOptionPane.showConfirmDialog(null,
-                                "¿Está seguro que desea seleccionar esta fecha?",
-                                "Confirmación de Selección",
-                                JOptionPane.YES_NO_OPTION);
+            btnAceptar.addActionListener(_ -> {
+                Date selectedDate = dateChooser.getDate();
+                if (selectedDate != null) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null,
+                            "¿Está seguro que desea seleccionar esta fecha?",
+                            "Confirmación de Selección",
+                            JOptionPane.YES_NO_OPTION);
 
-                        if (confirmacion == JOptionPane.YES_OPTION) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            String fechaHora = sdf.format(selectedDate);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        String fechaHora = sdf.format(selectedDate);
 
-                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
-                            if (descripcion != null && !descripcion.trim().isEmpty()) {
-                                administradorSistema.agendarCita(paciente, fechaHora, descripcion);
-                                JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-                            frame.dispose();
+                        String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
+                        if (descripcion != null && !descripcion.trim().isEmpty()) {
+                            administradorSistema.agendarCita(paciente, fechaHora, descripcion);
+                            JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                        frame.dispose();
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
 
@@ -153,32 +148,29 @@ public class MenuAdministrador {
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
 
-                btnAceptar.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        Date selectedDate = dateChooser.getDate();
-                        if (selectedDate != null) {
-                            int confirmacion = JOptionPane.showConfirmDialog(null,
-                                    "¿Está seguro que desea seleccionar esta fecha?",
-                                    "Confirmación de Selección",
-                                    JOptionPane.YES_NO_OPTION);
+                btnAceptar.addActionListener(_ -> {
+                    Date selectedDate = dateChooser.getDate();
+                    if (selectedDate != null) {
+                        int confirmacion = JOptionPane.showConfirmDialog(null,
+                                "¿Está seguro que desea seleccionar esta fecha?",
+                                "Confirmación de Selección",
+                                JOptionPane.YES_NO_OPTION);
 
-                            if (confirmacion == JOptionPane.YES_OPTION) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                                String fechaHora = sdf.format(selectedDate);
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            String fechaHora = sdf.format(selectedDate);
 
-                                String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
-                                if (descripcion != null && !descripcion.trim().isEmpty()) {
-                                    administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
-                                    JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
-                                } else {
-                                    JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                                }
-                                frame.dispose();
+                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
+                            if (descripcion != null && !descripcion.trim().isEmpty()) {
+                                administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
+                                JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                            frame.dispose();
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 });
 

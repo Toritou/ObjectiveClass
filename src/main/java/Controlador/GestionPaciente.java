@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GestionPaciente {
-    private Map<String, Paciente> pacientes;
+    private final Map<String, Paciente> pacientes;
 
     public GestionPaciente() {
         this.pacientes = new HashMap<>();
@@ -40,7 +40,7 @@ public class GestionPaciente {
 
     public boolean eliminarCita(Paciente pacienteActual, String fechaHoraEliminar) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date fechaHora = null;
+        Date fechaHora;
         try {
             fechaHora = sdf.parse(fechaHoraEliminar);
         } catch (Exception e) {

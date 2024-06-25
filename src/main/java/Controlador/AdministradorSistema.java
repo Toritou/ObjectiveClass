@@ -7,13 +7,12 @@ import csv.CSVManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class AdministradorSistema {
-    private List<Paciente> listaPacientes;
-    private AgendaCitas agendaCitas;
+    private final List<Paciente> listaPacientes;
+    private final AgendaCitas agendaCitas;
 
     public AdministradorSistema() {
         listaPacientes = CSVManager.leerPacientes();
