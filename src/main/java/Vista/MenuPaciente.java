@@ -1,6 +1,5 @@
-package Launcher;
+package Vista;
 
-import Controlador.GestionPaciente;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
@@ -12,32 +11,14 @@ import java.util.Scanner;
 
 public class MenuPaciente {
     private final Scanner scanner;
-    private final GestionPaciente gestionPaciente;
-    private Paciente pacienteActual;
+    private final Paciente pacienteActual;
 
     public MenuPaciente(Paciente paciente) {
         this.scanner = new Scanner(System.in);
-        this.gestionPaciente = new GestionPaciente();
         this.pacienteActual = paciente;
     }
 
-    public void iniciarSesion() {
-        System.out.print("Ingrese su RUT: ");
-        String rut = scanner.nextLine();
-        System.out.print("Ingrese su contraseña: ");
-        String contrasena = scanner.nextLine();
-
-        Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
-        if (paciente != null) {
-            System.out.println("Inicio de sesión exitoso.");
-            pacienteActual = paciente;
-        } else {
-            System.out.println("RUT o contraseña incorrectos.");
-        }
-    }
-
     public void mostrarMenu() {
-        iniciarSesion();
         int opcion;
         do {
             System.out.println("=== Menú del Paciente ===");
@@ -48,7 +29,7 @@ public class MenuPaciente {
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea después de leer la opción
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -223,7 +204,7 @@ public class MenuPaciente {
             System.err.println("Error al eliminar la cita: " + e.getMessage());
         }
 
-        // Renombrar el archivo temporal al original
+        //! Renombrar el archivo temporal al original
         File oldFile = new File("agenda.csv");
         File newFile = new File("citasborradas.csv");
         if (newFile.renameTo(oldFile)) {

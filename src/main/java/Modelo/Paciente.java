@@ -7,6 +7,7 @@ import java.util.List;
 public class Paciente {
     private String nombreCompleto;
     private final String rut;
+    private String correo;
     private String edad;
     private String fechaNacimiento;
     private String tipoSangre;
@@ -21,9 +22,10 @@ public class Paciente {
     private final String fichaMedica;
     private List<Date> citas; // Nueva lista para almacenar las citas del paciente
 
-    public Paciente(String nombreCompleto, String rut, String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
+    public Paciente(String nombreCompleto, String rut, String Correo ,String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
         this.nombreCompleto = nombreCompleto;
         this.rut = rut;
+        this.correo = Correo;
         this.edad = edad;
         this.fechaNacimiento = fechaNacimiento;
         this.tipoSangre = tipoSangre;
@@ -36,13 +38,13 @@ public class Paciente {
         this.cirugias = cirugias;
         this.otros = otros;
         this.fichaMedica = fichaMedica;
-        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
+        this.citas = new ArrayList<>();
     }
 
     public Paciente(String adminRut, String adminContrasena) {
         this.rut = adminRut;
         this.fichaMedica = adminContrasena;
-        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
+        this.citas = new ArrayList<>();
     }
 
     public Paciente(String nombre, String rut, String fechaNacimiento, String tipoSangre) {
@@ -51,7 +53,7 @@ public class Paciente {
         this.fechaNacimiento = fechaNacimiento;
         this.tipoSangre = tipoSangre;
         this.fichaMedica = "";
-        this.citas = new ArrayList<>(); // Inicialización de la lista de citas
+        this.citas = new ArrayList<>();
     }
 
     // Getters y Setters
@@ -62,6 +64,10 @@ public class Paciente {
 
     public String getRut() {
         return rut;
+    }
+
+    public String getCorreo() {
+        return correo;
     }
 
     public String getEdad() {
@@ -120,6 +126,10 @@ public class Paciente {
         this.nombreCompleto = nombre;
     }
 
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
     public void setTipoSangre(String tipoSangre) {
         this.tipoSangre = tipoSangre;
     }
@@ -130,5 +140,27 @@ public class Paciente {
 
     public void setCitas(List<Date> citas) {
         this.citas = citas;
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "nombreCompleto='" + nombreCompleto + '\'' +
+                ", rut='" + rut + '\'' +
+                ", correo='" + correo + '\'' +
+                ", edad='" + edad + '\'' +
+                ", fechaNacimiento='" + fechaNacimiento + '\'' +
+                ", tipoSangre='" + tipoSangre + '\'' +
+                ", peso='" + peso + '\'' +
+                ", estadoCivil='" + estadoCivil + '\'' +
+                ", domicilio='" + domicilio + '\'' +
+                ", enfermedades='" + enfermedades + '\'' +
+                ", alergias='" + alergias + '\'' +
+                ", medicamentos='" + medicamentos + '\'' +
+                ", cirugias='" + cirugias + '\'' +
+                ", otros='" + otros + '\'' +
+                ", fichaMedica='" + fichaMedica + '\'' +
+                ", citas=" + citas +
+                '}';
     }
 }

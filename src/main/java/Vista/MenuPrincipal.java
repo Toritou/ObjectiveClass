@@ -1,4 +1,4 @@
-package Launcher;
+package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.GestionPaciente;
@@ -30,7 +30,7 @@ public class MenuPrincipal {
 
             try {
                 opcion = scanner.nextInt();
-                scanner.nextLine(); // Consumir el salto de línea después del entero
+                scanner.nextLine();
 
                 switch (opcion) {
                     case 1:
@@ -48,7 +48,7 @@ public class MenuPrincipal {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Por favor, ingrese un número.");
-                scanner.nextLine(); // Limpiar el buffer de entrada
+                scanner.nextLine();
             }
 
         } while (opcion != 0);
@@ -60,12 +60,12 @@ public class MenuPrincipal {
         System.out.print("Ingrese contraseña: ");
         String contrasena = scanner.nextLine();
 
-        // Verificar si es administrador
+        //! Verificar si es administrador
         if (administradorSistema.iniciarSesionComoAdmin(rut, contrasena)) {
             MenuAdministrador menuAdmin = new MenuAdministrador();
             menuAdmin.mostrarMenu();
         } else {
-            // Si no es administrador, intentar iniciar sesión como paciente
+            //! Si no es administrador, intentar iniciar sesiOn como paciente
             Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
             if (paciente != null) {
                 MenuPaciente menuPacientes = new MenuPaciente(paciente);
@@ -81,6 +81,8 @@ public class MenuPrincipal {
         String nombreCompleto = scanner.nextLine();
         System.out.print("Ingrese su RUT: ");
         String rut = scanner.nextLine();
+        System.out.print("Ingrese su correo: ");
+        String correo = scanner.nextLine();
         System.out.print("Ingrese su edad: ");
         String edad = scanner.nextLine();
         System.out.print("Ingrese su fecha de nacimiento (dd/MM/yyyy): ");
@@ -106,7 +108,7 @@ public class MenuPrincipal {
         System.out.print("Ingrese su contraseña: ");
         String contrasena = scanner.nextLine();
 
-        Paciente nuevoPaciente = new Paciente(nombreCompleto, rut, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
+        Paciente nuevoPaciente = new Paciente(nombreCompleto, rut, correo, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
         gestionPaciente.agregarPaciente(nuevoPaciente);
 
         System.out.println("Registro completado. Ahora puede iniciar sesión.");

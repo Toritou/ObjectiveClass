@@ -1,6 +1,7 @@
-package Launcher;
+package Vista;
 
 import Controlador.AdministradorSistema;
+import Controlador.Correo;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
@@ -12,10 +13,13 @@ import java.util.Scanner;
 public class MenuAdministrador {
     private final Scanner scanner;
     private final AdministradorSistema administradorSistema;
+    private final Correo correo;
 
     public MenuAdministrador() {
         scanner = new Scanner(System.in);
         administradorSistema = new AdministradorSistema();
+        correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
+
     }
 
     public void mostrarMenu() {
@@ -80,7 +84,7 @@ public class MenuAdministrador {
         if (paciente != null) {
             JDateChooser dateChooser = new JDateChooser();
             dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
-            dateChooser.setMinSelectableDate(new Date()); // No permitir fechas anteriores a la actual
+            dateChooser.setMinSelectableDate(new Date());
 
             JButton btnAceptar = new JButton("Aceptar");
 
@@ -108,13 +112,19 @@ public class MenuAdministrador {
                         if (descripcion != null && !descripcion.trim().isEmpty()) {
                             administradorSistema.agendarCita(paciente, fechaHora, descripcion);
                             JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
+
+                            // Enviar correo de confirmación
+                            String destinatario = paciente.getCorreo();
+                            String asunto = "Confirmación de Cita";
+                            String contenidoHtml = "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>";
+                            correo.enviarCorreo(destinatario, asunto, contenidoHtml);
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(frame, "Descripción no valida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                         frame.dispose();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
 
@@ -124,12 +134,12 @@ public class MenuAdministrador {
     }
 
     private void modificarHora() {
-        System.out.print("Ingrese el número de la cita a modificar: ");
+        System.out.print("Ingrese el número de la cita a modificar:  ");
         int indice = scanner.nextInt();
         scanner.nextLine();
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
-            System.out.print("Ingrese el nuevo Rut del paciente: ");
+            System.out.print("Ingrese el Rut del paciente: ");
             String rut = scanner.nextLine();
             Paciente paciente = buscarPaciente(rut);
 
@@ -164,6 +174,14 @@ public class MenuAdministrador {
                             if (descripcion != null && !descripcion.trim().isEmpty()) {
                                 administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
                                 JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
+
+                                //? Enviar correo de confirmación
+
+                                String destinatario = paciente.getCorreo();
+                                String asunto = "Modificacion de Cita";
+                                String contenidoHtml = "<strong>Su cita ha sido modificada para el " + fechaHora + ".</strong>";
+                                correo.enviarCorreo(destinatario, asunto, contenidoHtml);
+
                             } else {
                                 JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -185,7 +203,7 @@ public class MenuAdministrador {
     private void eliminarHora() {
         System.out.print("Ingrese el número de la cita a eliminar: ");
         int indice = scanner.nextInt();
-        scanner.nextLine(); // Consume el salto de línea
+        scanner.nextLine();
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             administradorSistema.eliminarCita(indice);

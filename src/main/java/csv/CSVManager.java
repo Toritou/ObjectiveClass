@@ -18,10 +18,10 @@ public class CSVManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] datos = line.split(DELIMITER);
-                if (datos.length >= 14) {
+                if (datos.length >= 15) {
                     Paciente paciente = new Paciente(datos[0], datos[1], datos[2], datos[3],
                             datos[4], datos[5], datos[6], datos[7], datos[8],
-                            datos[9], datos[10], datos[11], datos[12], datos[13]);
+                            datos[9], datos[10], datos[11], datos[12], datos[13], datos[14]);
                     pacientes.add(paciente);
                 }
             }
@@ -33,9 +33,11 @@ public class CSVManager {
 
     public static void escribirPacientes(List<Paciente> pacientes) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PACIENTES_CSV))) {
+            writer.write("Nombre Completo,RUT,Correo,Edad,Fecha de Nacimiento,Tipo de Sangre,Peso,Estado Civil,Domicilio,Enfermedades,Alergias,Medicamentos,Cirugias,Otros,Ficha Médica\n");
             for (Paciente paciente : pacientes) {
                 String linea = paciente.getNombreCompleto() + DELIMITER +
                         paciente.getRut() + DELIMITER +
+                        paciente.getCorreo() + DELIMITER +
                         paciente.getEdad() + DELIMITER +
                         paciente.getFechaNacimiento() + DELIMITER +
                         paciente.getTipoSangre() + DELIMITER +
