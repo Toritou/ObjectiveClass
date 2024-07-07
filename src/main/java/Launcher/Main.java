@@ -1,10 +1,15 @@
 package Launcher;
 
-import Vista.MenuPrincipal;
+import Vista.VentanaInicioSesion;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        MenuPrincipal menuPrincipal = new MenuPrincipal();
-        menuPrincipal.mostrarMenu();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new VentanaInicioSesion().setVisible(true);
+            }
+        });
     }
 }
