@@ -41,7 +41,7 @@ public class Paciente {
         this.citas = new ArrayList<>();
     }
 
-    public Paciente(String adminRut, String adminContrasena) {
+    public Paciente(String string2, String juanPérez, int i1, String s2, String string1, int i, String soltero, String s1, String ninguna1, String string, String s, String ninguna, String adminRut, String adminContrasena) {
         this.rut = adminRut;
         this.fichaMedica = adminContrasena;
         this.citas = new ArrayList<>();

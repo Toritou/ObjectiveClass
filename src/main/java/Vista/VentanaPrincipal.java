@@ -1,8 +1,14 @@
 package Vista;
 
-import javax.swing.*;
+import Controlador.AdministradorSistema;
+import Controlador.GestionPaciente;
+import Modelo.Paciente;
 
-public class VentanaInicioSesion {
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class VentanaPrincipal {
     private JButton iniciarSesiónButton;
     private JButton registrarseButton;
     private JTextField ingreseSuIDTextField;

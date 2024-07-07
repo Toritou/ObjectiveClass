@@ -1,3 +1,7 @@
 Nombre Completo,RUT,Correo,Edad,Fecha de Nacimiento,Tipo de Sangre,Peso,Estado Civil,Domicilio,Enfermedades,Alergias,Medicamentos,Cirugias,Otros,Ficha Médica
 Nombre Completo,RUT,Correo,Edad,Fecha de Nacimiento,Tipo de Sangre,Peso,Estado Civil,Domicilio,Enfermedades,Alergias,Medicamentos,Cirugias,Otros,Ficha Médica
 Luis Alberto Toro Chavez,214780054,luistoro1203@gmail.com,20,07/12/2003,O+,105,Soltero,-,Ninguno,Ninguno,Ninguno,Ninguna,.,LuisT1203@
+-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.
+Juan Perez,12345678-9,correo@ejemplo.com,30,01/01/1990,A+,70kg,Soltero,Domicilio,Ninguna,Ninguna,Ninguno,Ninguna,Ninguno,Ficha
+Nuevo Paciente,87654321-0,nuevo@correo.com,25,02/02/1999,B+,65kg,Casado,Nuevo Domicilio,Ninguna,Ninguna,Ninguno,Ninguna,Ninguno,Nueva Ficha
