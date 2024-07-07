@@ -2,6 +2,7 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.Correo;
+import Modelo.AgendaCitas;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class VentanaAdministrador extends JFrame {
     private final AdministradorSistema administradorSistema;
@@ -307,8 +309,18 @@ public class VentanaAdministrador extends JFrame {
     }
 
     private void verAgenda() {
-        String agenda = administradorSistema.obtenerAgenda().toString();
-        JOptionPane.showMessageDialog(this, agenda, "Agenda", JOptionPane.INFORMATION_MESSAGE);
+        StringBuilder agenda = new StringBuilder("=== Agenda ===\n");
+        List<AgendaCitas.Cita> citas = administradorSistema.obtenerAgenda(); // Asumiendo que obtenerAgenda() devuelve List<Cita>
+        if (citas != null) {
+            for (AgendaCitas.Cita cita : citas) {
+                agenda.append("Paciente: ").append(cita.getPaciente().getNombreCompleto()).append("\n");
+                agenda.append("Fecha y hora: ").append(cita.getFechaHora()).append("\n");
+                agenda.append("Descripción: ").append(cita.getDescripcion()).append("\n\n");
+            }
+            JOptionPane.showMessageDialog(this, agenda.toString(), "Agenda", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener la agenda.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void verListaPacientes() {
