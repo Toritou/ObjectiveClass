@@ -6,81 +6,116 @@ import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
-public class MenuAdministrador {
-    private final Scanner scanner;
+public class VentanaAdministrador extends JFrame {
     private final AdministradorSistema administradorSistema;
     private final Correo correo;
+    private JComboBox<String> comboBoxHoras;
+    private JComboBox<String> comboBoxPacientes;
+    private JComboBox<String> comboBoxVer;
 
-    public MenuAdministrador() {
-        scanner = new Scanner(System.in);
-        administradorSistema = new AdministradorSistema();
-        correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
+    public VentanaAdministrador(AdministradorSistema administradorSistema, Correo correo) {
+        this.administradorSistema = administradorSistema;
+        this.correo = correo;
 
+        configurarVentana();
+        inicializarComponentes();
     }
 
-    public void mostrarMenu() {
-        VentanaAdministrador ventanaAdministrador = new VentanaAdministrador(administradorSistema, correo);
-        ventanaAdministrador.setVisible(true);
-        int opcion;
+    private void configurarVentana() {
+        setTitle("Menú Administrador");
+        setSize(400, 300);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
 
-        do {
-            System.out.println("=== Menú Administrador ===");
-            System.out.println("1. Agendar Hora");
-            System.out.println("2. Modificar Hora");
-            System.out.println("3. Eliminar Hora");
-            System.out.println("4. Agregar Paciente");
-            System.out.println("5. Modificar Paciente");
-            System.out.println("6. Eliminar Paciente");
-            System.out.println("7. Ver Agenda");
-            System.out.println("8. Ver lista de Pacientes");
-            System.out.println("0. Salir");
-            System.out.print("Ingrese su opción: ");
-            opcion = scanner.nextInt();
-            scanner.nextLine(); // Consume el salto de línea
+    private void inicializarComponentes() {
+        // Crear JComboBox para Gestión de Horas
+        String[] opcionesHoras = {"Seleccione", "Agregar Hora", "Editar Hora", "Eliminar Hora"};
+        comboBoxHoras = new JComboBox<>(opcionesHoras);
+        comboBoxHoras.setBounds(50, 50, 250, 30);
+        add(comboBoxHoras);
 
-            switch (opcion) {
-                case 1:
-                    agendarHora();
-                    break;
-                case 2:
-                    modificarHora();
-                    break;
-                case 3:
-                    eliminarHora();
-                    break;
-                case 4:
-                    agregarPaciente();
-                    break;
-                case 5:
-                    modificarPaciente();
-                    break;
-                case 6:
-                    eliminarPaciente();
-                    break;
-                case 7:
-                    verAgenda();
-                    break;
-                case 8:
-                    verListaPacientes();
-                    break;
-                case 0:
-                    System.out.println("Saliendo del sistema...");
-                    break;
-                default:
-                    System.out.println("Opción inválida. Intente de nuevo.");
-                    break;
+        // Crear JComboBox para Gestión de Pacientes
+        String[] opcionesPacientes = {"Seleccione", "Agregar Paciente", "Editar Paciente", "Eliminar Paciente"};
+        comboBoxPacientes = new JComboBox<>(opcionesPacientes);
+        comboBoxPacientes.setBounds(50, 100, 250, 30);
+        add(comboBoxPacientes);
+
+        // Crear JComboBox para Ver Agenda o Pacientes
+        String[] opcionesVer = {"Seleccione", "Ver Agenda", "Ver Pacientes"};
+        comboBoxVer = new JComboBox<>(opcionesVer);
+        comboBoxVer.setBounds(50, 150, 250, 30);
+        add(comboBoxVer);
+
+        // Agregar ActionListener al JComboBox para Gestión de Horas
+        comboBoxHoras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String seleccion = (String) comboBoxHoras.getSelectedItem();
+                switch (seleccion) {
+                    case "Agregar Hora":
+                        agendarHora();
+                        break;
+                    case "Editar Hora":
+                        modificarHora();
+                        break;
+                    case "Eliminar Hora":
+                        eliminarHora();
+                        break;
+                    default:
+                        break;
+                }
             }
+        });
 
-        } while (opcion != 0);
+        // Agregar ActionListener al JComboBox para Gestión de Pacientes
+        comboBoxPacientes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String seleccion = (String) comboBoxPacientes.getSelectedItem();
+                switch (seleccion) {
+                    case "Agregar Paciente":
+                        agregarPaciente();
+                        break;
+                    case "Editar Paciente":
+                        modificarPaciente();
+                        break;
+                    case "Eliminar Paciente":
+                        eliminarPaciente();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        // Agregar ActionListener al JComboBox para Ver Agenda o Pacientes
+        comboBoxVer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String seleccion = (String) comboBoxVer.getSelectedItem();
+                switch (seleccion) {
+                    case "Ver Agenda":
+                        verAgenda();
+                        break;
+                    case "Ver Pacientes":
+                        verListaPacientes();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     private void agendarHora() {
-        System.out.print("Ingrese el Rut del paciente: ");
-        String rut = scanner.nextLine();
+        String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
         Paciente paciente = buscarPaciente(rut);
 
         if (paciente != null) {
@@ -98,7 +133,7 @@ public class MenuAdministrador {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            btnAceptar.addActionListener(_ -> {
+            btnAceptar.addActionListener(e -> {
                 Date selectedDate = dateChooser.getDate();
                 if (selectedDate != null) {
                     int confirmacion = JOptionPane.showConfirmDialog(null,
@@ -121,12 +156,12 @@ public class MenuAdministrador {
                             String contenidoHtml = "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>";
                             correo.enviarCorreo(destinatario, asunto, contenidoHtml);
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Descripción no valida.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                         frame.dispose();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
 
@@ -136,13 +171,11 @@ public class MenuAdministrador {
     }
 
     private void modificarHora() {
-        System.out.print("Ingrese el número de la cita a modificar:  ");
-        int indice = scanner.nextInt();
-        scanner.nextLine();
+        String indiceStr = JOptionPane.showInputDialog(this, "Ingrese el número de la cita a modificar:");
+        int indice = Integer.parseInt(indiceStr);
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
-            System.out.print("Ingrese el Rut del paciente: ");
-            String rut = scanner.nextLine();
+            String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
             Paciente paciente = buscarPaciente(rut);
 
             if (paciente != null) {
@@ -160,7 +193,7 @@ public class MenuAdministrador {
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
 
-                btnAceptar.addActionListener(_ -> {
+                btnAceptar.addActionListener(e -> {
                     Date selectedDate = dateChooser.getDate();
                     if (selectedDate != null) {
                         int confirmacion = JOptionPane.showConfirmDialog(null,
@@ -177,13 +210,11 @@ public class MenuAdministrador {
                                 administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
                                 JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
 
-                                //? Enviar correo de confirmación
-
+                                // Enviar correo de confirmación
                                 String destinatario = paciente.getCorreo();
-                                String asunto = "Modificacion de Cita";
+                                String asunto = "Modificación de Cita";
                                 String contenidoHtml = "<strong>Su cita ha sido modificada para el " + fechaHora + ".</strong>";
                                 correo.enviarCorreo(destinatario, asunto, contenidoHtml);
-
                             } else {
                                 JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -203,9 +234,8 @@ public class MenuAdministrador {
     }
 
     private void eliminarHora() {
-        System.out.print("Ingrese el número de la cita a eliminar: ");
-        int indice = scanner.nextInt();
-        scanner.nextLine();
+        String indiceStr = JOptionPane.showInputDialog(this, "Ingrese el número de la cita a eliminar:");
+        int indice = Integer.parseInt(indiceStr);
 
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             administradorSistema.eliminarCita(indice);
@@ -216,17 +246,13 @@ public class MenuAdministrador {
     }
 
     private void agregarPaciente() {
-        System.out.print("Ingrese el Rut del paciente: ");
-        String rut = scanner.nextLine();
+        String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
         Paciente paciente = buscarPaciente(rut);
 
         if (paciente == null) {
-            System.out.print("Ingrese el nombre del paciente: ");
-            String nombre = scanner.nextLine();
-            System.out.print("Ingrese la fecha de nacimiento del paciente (dd/MM/yyyy): ");
-            String fechaNacimiento = scanner.nextLine();
-            System.out.print("Ingrese el tipo de sangre del paciente: ");
-            String tipoSangre = scanner.nextLine();
+            String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del paciente:");
+            String fechaNacimiento = JOptionPane.showInputDialog(this, "Ingrese la fecha de nacimiento del paciente (dd/MM/yyyy):");
+            String tipoSangre = JOptionPane.showInputDialog(this, "Ingrese el tipo de sangre del paciente:");
             administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
             JOptionPane.showMessageDialog(null, "Paciente agregado correctamente.");
         } else {
@@ -235,15 +261,12 @@ public class MenuAdministrador {
     }
 
     private void modificarPaciente() {
-        System.out.print("Ingrese el Rut del paciente a modificar: ");
-        String rut = scanner.nextLine();
+        String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente a modificar:");
         Paciente paciente = buscarPaciente(rut);
 
         if (paciente != null) {
-            System.out.print("Ingrese el nuevo nombre del paciente: ");
-            String nombre = scanner.nextLine();
-            System.out.print("Ingrese el nuevo tipo de sangre del paciente: ");
-            String tipoSangre = scanner.nextLine();
+            String nombre = JOptionPane.showInputDialog(this, "Ingrese el nuevo nombre del paciente:");
+            String tipoSangre = JOptionPane.showInputDialog(this, "Ingrese el nuevo tipo de sangre del paciente:");
             administradorSistema.modificarPaciente(rut, nombre, tipoSangre);
             JOptionPane.showMessageDialog(null, "Paciente modificado correctamente.");
         } else {
@@ -252,8 +275,7 @@ public class MenuAdministrador {
     }
 
     private void eliminarPaciente() {
-        System.out.print("Ingrese el Rut del paciente a eliminar: ");
-        String rut = scanner.nextLine();
+        String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente a eliminar:");
         Paciente paciente = buscarPaciente(rut);
 
         if (paciente != null) {
@@ -265,20 +287,32 @@ public class MenuAdministrador {
     }
 
     private void verAgenda() {
-        administradorSistema.verAgenda();
+        String agenda = administradorSistema.obtenerAgenda().toString();
+        JOptionPane.showMessageDialog(this, agenda, "Agenda", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void verListaPacientes() {
-        System.out.println("=== Lista de Pacientes ===");
-        administradorSistema.obtenerListaPacientes().forEach(paciente -> System.out.println(paciente.getNombreCompleto()));
+        StringBuilder listaPacientes = new StringBuilder("=== Lista de Pacientes ===\n");
+        for (Paciente paciente : administradorSistema.obtenerListaPacientes()) {
+            listaPacientes.append(paciente.getNombreCompleto()).append("\n");
+        }
+        JOptionPane.showMessageDialog(this, listaPacientes.toString(), "Pacientes", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private Paciente buscarPaciente(String rut) {
-        for (Paciente paciente : administradorSistema.obtenerListaPacientes()) {
-            if (paciente.getRut().equals(rut)) {
-                return paciente;
-            }
-        }
-        return null;
+        return administradorSistema.obtenerListaPacientes().stream()
+                .filter(paciente -> paciente.getRut().equals(rut))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static void main(String[] args) {
+        // Crear instancias de AdministradorSistema y Correo
+        AdministradorSistema administradorSistema = new AdministradorSistema();
+        Correo correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
+
+        // Crear y mostrar la ventana
+        VentanaAdministrador ventana = new VentanaAdministrador(administradorSistema, correo);
+        ventana.setVisible(true);
     }
 }
