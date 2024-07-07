@@ -18,6 +18,11 @@ public class VentanaAdministrador extends JFrame {
     private JComboBox<String> comboBoxPacientes;
     private JComboBox<String> comboBoxVer;
 
+    // JLabels para las secciones del formulario
+    private JLabel lblGestionHoras;
+    private JLabel lblGestionPacientes;
+    private JLabel lblVerAgenda;
+
     public VentanaAdministrador(AdministradorSistema administradorSistema, Correo correo) {
         this.administradorSistema = administradorSistema;
         this.correo = correo;
@@ -28,13 +33,26 @@ public class VentanaAdministrador extends JFrame {
 
     private void configurarVentana() {
         setTitle("Menú Administrador");
-        setSize(400, 300);
+        setSize(600, 400);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 
     private void inicializarComponentes() {
+        // Crear JLabels para las secciones del formulario
+        lblGestionHoras = new JLabel("Gestión de Horas:");
+        lblGestionHoras.setBounds(50, 20, 200, 30);
+        add(lblGestionHoras);
+
+        lblGestionPacientes = new JLabel("Gestión de Pacientes:");
+        lblGestionPacientes.setBounds(50, 70, 200, 30);
+        add(lblGestionPacientes);
+
+        lblVerAgenda = new JLabel("Ver Agenda o Pacientes:");
+        lblVerAgenda.setBounds(50, 120, 200, 30);
+        add(lblVerAgenda);
+
         // Crear JComboBox para Gestión de Horas
         String[] opcionesHoras = {"Seleccione", "Agregar Hora", "Editar Hora", "Eliminar Hora"};
         comboBoxHoras = new JComboBox<>(opcionesHoras);
@@ -113,6 +131,8 @@ public class VentanaAdministrador extends JFrame {
             }
         });
     }
+
+    // Métodos para la funcionalidad de los JComboBox
 
     private void agendarHora() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
