@@ -20,11 +20,6 @@ public class VentanaAdministrador extends JFrame {
     private JComboBox<String> comboBoxPacientes;
     private JComboBox<String> comboBoxVer;
 
-    // JLabels para las secciones del formulario
-    private JLabel lblGestionHoras;
-    private JLabel lblGestionPacientes;
-    private JLabel lblVerAgenda;
-
     public VentanaAdministrador(AdministradorSistema administradorSistema, Correo correo) {
         this.administradorSistema = administradorSistema;
         this.correo = correo;
@@ -43,15 +38,16 @@ public class VentanaAdministrador extends JFrame {
 
     private void inicializarComponentes() {
         // Crear JLabels para las secciones del formulario
-        lblGestionHoras = new JLabel("Gestión de Horas:");
+        // JLabels para las secciones del formulario
+        JLabel lblGestionHoras = new JLabel("Gestión de Horas:");
         lblGestionHoras.setBounds(50, 20, 200, 30);
         add(lblGestionHoras);
 
-        lblGestionPacientes = new JLabel("Gestión de Pacientes:");
+        JLabel lblGestionPacientes = new JLabel("Gestión de Pacientes:");
         lblGestionPacientes.setBounds(50, 70, 200, 30);
         add(lblGestionPacientes);
 
-        lblVerAgenda = new JLabel("Ver Agenda o Pacientes:");
+        JLabel lblVerAgenda = new JLabel("Ver Agenda o Pacientes:");
         lblVerAgenda.setBounds(50, 120, 200, 30);
         add(lblVerAgenda);
 
@@ -74,23 +70,20 @@ public class VentanaAdministrador extends JFrame {
         add(comboBoxVer);
 
         // Agregar ActionListener al JComboBox para Gestión de Horas
-        comboBoxHoras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String seleccion = (String) comboBoxHoras.getSelectedItem();
-                switch (seleccion) {
-                    case "Agregar Hora":
-                        agendarHora();
-                        break;
-                    case "Editar Hora":
-                        modificarHora();
-                        break;
-                    case "Eliminar Hora":
-                        eliminarHora();
-                        break;
-                    default:
-                        break;
-                }
+        comboBoxHoras.addActionListener(e -> {
+            String seleccion = (String) comboBoxHoras.getSelectedItem();
+            switch (seleccion) {
+                case "Agregar Hora":
+                    agendarHora();
+                    break;
+                case "Editar Hora":
+                    modificarHora();
+                    break;
+                case "Eliminar Hora":
+                    eliminarHora();
+                    break;
+                default:
+                    break;
             }
         });
 
@@ -338,13 +331,4 @@ public class VentanaAdministrador extends JFrame {
                 .orElse(null);
     }
 
-    public static void main(String[] args) {
-        // Crear instancias de AdministradorSistema y Correo
-        AdministradorSistema administradorSistema = new AdministradorSistema();
-        Correo correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
-
-        // Crear y mostrar la ventana
-        VentanaAdministrador ventana = new VentanaAdministrador(administradorSistema, correo);
-        ventana.setVisible(true);
-    }
 }
