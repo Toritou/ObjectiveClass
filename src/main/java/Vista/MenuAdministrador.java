@@ -23,6 +23,8 @@ public class MenuAdministrador {
     }
 
     public void mostrarMenu() {
+        VentanaAdministrador ventanaAdministrador = new VentanaAdministrador(administradorSistema, correo);
+        ventanaAdministrador.setVisible(true);
         int opcion;
 
         do {
