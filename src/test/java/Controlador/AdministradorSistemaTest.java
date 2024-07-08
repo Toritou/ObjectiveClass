@@ -20,8 +20,6 @@ class AdministradorSistemaTest {
     void testParseDateInvalid() {
         String fechaHora = "invalid_date";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        assertThrows(ParseException.class, () -> {
-            sdf.parse(fechaHora);
-        });
+        assertThrows(ParseException.class, () -> sdf.parse(fechaHora));
     }
 }
