@@ -2,6 +2,7 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.Correo;
+import Modelo.AgendaCitas;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class VentanaAdministrador extends JFrame {
     private final AdministradorSistema administradorSistema;
@@ -17,6 +19,11 @@ public class VentanaAdministrador extends JFrame {
     private JComboBox<String> comboBoxHoras;
     private JComboBox<String> comboBoxPacientes;
     private JComboBox<String> comboBoxVer;
+
+    // JLabels para las secciones del formulario
+    private JLabel lblGestionHoras;
+    private JLabel lblGestionPacientes;
+    private JLabel lblVerAgenda;
 
     public VentanaAdministrador(AdministradorSistema administradorSistema, Correo correo) {
         this.administradorSistema = administradorSistema;
@@ -28,13 +35,26 @@ public class VentanaAdministrador extends JFrame {
 
     private void configurarVentana() {
         setTitle("Menú Administrador");
-        setSize(400, 300);
+        setSize(600, 400);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 
     private void inicializarComponentes() {
+        // Crear JLabels para las secciones del formulario
+        lblGestionHoras = new JLabel("Gestión de Horas:");
+        lblGestionHoras.setBounds(50, 20, 200, 30);
+        add(lblGestionHoras);
+
+        lblGestionPacientes = new JLabel("Gestión de Pacientes:");
+        lblGestionPacientes.setBounds(50, 70, 200, 30);
+        add(lblGestionPacientes);
+
+        lblVerAgenda = new JLabel("Ver Agenda o Pacientes:");
+        lblVerAgenda.setBounds(50, 120, 200, 30);
+        add(lblVerAgenda);
+
         // Crear JComboBox para Gestión de Horas
         String[] opcionesHoras = {"Seleccione", "Agregar Hora", "Editar Hora", "Eliminar Hora"};
         comboBoxHoras = new JComboBox<>(opcionesHoras);
@@ -113,6 +133,8 @@ public class VentanaAdministrador extends JFrame {
             }
         });
     }
+
+    // Métodos para la funcionalidad de los JComboBox
 
     private void agendarHora() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
@@ -287,8 +309,18 @@ public class VentanaAdministrador extends JFrame {
     }
 
     private void verAgenda() {
-        String agenda = administradorSistema.obtenerAgenda().toString();
-        JOptionPane.showMessageDialog(this, agenda, "Agenda", JOptionPane.INFORMATION_MESSAGE);
+        StringBuilder agenda = new StringBuilder("=== Agenda ===\n");
+        List<AgendaCitas.Cita> citas = administradorSistema.obtenerAgenda(); // Asumiendo que obtenerAgenda() devuelve List<Cita>
+        if (citas != null) {
+            for (AgendaCitas.Cita cita : citas) {
+                agenda.append("Paciente: ").append(cita.getPaciente().getNombreCompleto()).append("\n");
+                agenda.append("Fecha y hora: ").append(cita.getFechaHora()).append("\n");
+                agenda.append("Descripción: ").append(cita.getDescripcion()).append("\n\n");
+            }
+            JOptionPane.showMessageDialog(this, agenda.toString(), "Agenda", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener la agenda.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void verListaPacientes() {
