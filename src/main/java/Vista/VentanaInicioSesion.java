@@ -221,10 +221,4 @@ public class VentanaInicioSesion extends JFrame {
         frameRegistrarse.add(panel);
         frameRegistrarse.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new VentanaInicioSesion().setVisible(true);
-        });
-    }
 }
