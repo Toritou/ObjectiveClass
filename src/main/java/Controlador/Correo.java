@@ -3,10 +3,9 @@ package Controlador;
 import com.resend.*;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
-import com.resend.services.emails.model.CreateEmailResponse;
 
 public class Correo {
-    private Resend resend;
+    private final Resend resend;
 
     public Correo(String apiKey) {
         resend = new Resend(apiKey);
@@ -21,7 +20,7 @@ public class Correo {
                 .build();
 
         try {
-            CreateEmailResponse data = resend.emails().send(params);
+            resend.emails().send(params);
             System.out.println("Correo enviado correctamente a " + destinatario);
         } catch (ResendException e) {
             e.printStackTrace();

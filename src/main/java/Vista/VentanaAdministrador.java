@@ -2,8 +2,8 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.Correo;
-import Modelo.AgendaCitas;
-import Modelo.Paciente;
+import Controlador.AgendaCitas;
+import Modelo.Pacientes;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -132,7 +132,7 @@ public class VentanaAdministrador extends JFrame {
 
     private void agendarHora() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             JDateChooser dateChooser = new JDateChooser();
@@ -201,13 +201,12 @@ public class VentanaAdministrador extends JFrame {
         if (indiceStr == null || indiceStr.trim().isEmpty()) {
             return; // Salir del método si no se ingresó ningún valor
         }
-
         try {
             int indice = Integer.parseInt(indiceStr);
 
             if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
                 String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
-                Paciente paciente = buscarPaciente(rut);
+                Pacientes paciente = buscarPaciente(rut);
 
                 if (paciente != null) {
                     JDateChooser dateChooser = new JDateChooser();
@@ -292,13 +291,13 @@ public class VentanaAdministrador extends JFrame {
 
     private void agregarPaciente() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente == null) {
             String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del paciente:");
             String fechaNacimiento = JOptionPane.showInputDialog(this, "Ingrese la fecha de nacimiento del paciente (dd/MM/yyyy):");
             String tipoSangre = JOptionPane.showInputDialog(this, "Ingrese el tipo de sangre del paciente:");
-            administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
+            administradorSistema.agregarPaciente(new Pacientes(nombre, rut, fechaNacimiento, tipoSangre));
             JOptionPane.showMessageDialog(null, "Paciente agregado correctamente.");
         } else {
             JOptionPane.showMessageDialog(null, "El paciente ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -307,7 +306,7 @@ public class VentanaAdministrador extends JFrame {
 
     private void modificarPaciente() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente a modificar:");
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             String nombre = JOptionPane.showInputDialog(this, "Ingrese el nuevo nombre del paciente:");
@@ -321,7 +320,7 @@ public class VentanaAdministrador extends JFrame {
 
     private void eliminarPaciente() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente a eliminar:");
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             administradorSistema.eliminarPaciente(rut);
@@ -348,13 +347,13 @@ public class VentanaAdministrador extends JFrame {
 
     private void verListaPacientes() {
         StringBuilder listaPacientes = new StringBuilder("=== Lista de Pacientes ===\n");
-        for (Paciente paciente : administradorSistema.obtenerListaPacientes()) {
+        for (Pacientes paciente : administradorSistema.obtenerListaPacientes()) {
             listaPacientes.append(paciente.getNombreCompleto()).append("\n");
         }
         JOptionPane.showMessageDialog(this, listaPacientes.toString(), "Pacientes", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private Paciente buscarPaciente(String rut) {
+    private Pacientes buscarPaciente(String rut) {
         return administradorSistema.obtenerListaPacientes().stream()
                 .filter(paciente -> paciente.getRut().equals(rut))
                 .findFirst()

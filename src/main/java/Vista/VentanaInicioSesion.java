@@ -2,7 +2,7 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.GestionPaciente;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,7 +91,7 @@ public class VentanaInicioSesion extends JFrame {
                     frameIniciarSesion.dispose();
                     VentanaInicioSesion.this.dispose();
                 } else {
-                    Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
+                    Pacientes paciente = gestionPaciente.iniciarSesion(rut, contrasena);
                     if (paciente != null) {
                         JOptionPane.showMessageDialog(frameIniciarSesion, "Bienvenido " + paciente.getNombreCompleto());
                         frameIniciarSesion.dispose();
@@ -108,7 +108,7 @@ public class VentanaInicioSesion extends JFrame {
         frameIniciarSesion.setVisible(true);
     }
 
-    private void abrirVentanaPaciente(Paciente paciente) {
+    private void abrirVentanaPaciente(Pacientes paciente) {
         VentanaPaciente ventanaPaciente = new VentanaPaciente(paciente);
         ventanaPaciente.setVisible(true);
     }
@@ -201,7 +201,7 @@ public class VentanaInicioSesion extends JFrame {
                 String otros = txtOtros.getText();
                 String contrasena = new String(txtContrasena.getPassword());
 
-                Paciente nuevoPaciente = new Paciente(nombreCompleto, rut, correo, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
+                Pacientes nuevoPaciente = new Pacientes(nombreCompleto, rut, correo, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
                 gestionPaciente.agregarPaciente(nuevoPaciente);
 
                 JOptionPane.showMessageDialog(frameRegistrarse, "Registro completado. Ahora puede iniciar sesión.");

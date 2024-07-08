@@ -1,7 +1,6 @@
 package Controlador;
 
-import Modelo.AgendaCitas;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 import csv.CSVManager;
 
 import java.text.ParseException;
@@ -11,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AdministradorSistema {
-    private final List<Paciente> listaPacientes;
+    private final List<Pacientes> listaPacientes;
     private final AgendaCitas agendaCitas;
 
     public AdministradorSistema() {
@@ -20,7 +19,7 @@ public class AdministradorSistema {
         cargarAgenda();
     }
 
-    public void agendarCita(Paciente paciente, String fechaHora, String descripcion) {
+    public void agendarCita(Pacientes paciente, String fechaHora, String descripcion) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             Date fecha = sdf.parse(fechaHora);
@@ -31,7 +30,7 @@ public class AdministradorSistema {
         }
     }
 
-    public void modificarCita(int indice, Paciente paciente, String fechaHora, String descripcion) {
+    public void modificarCita(int indice, Pacientes paciente, String fechaHora, String descripcion) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             Date fecha = sdf.parse(fechaHora);
@@ -51,13 +50,13 @@ public class AdministradorSistema {
         return agendaCitas.obtenerCitas();
     }
 
-    public void agregarPaciente(Paciente paciente) {
+    public void agregarPaciente(Pacientes paciente) {
         listaPacientes.add(paciente);
         guardarPacientes();
     }
 
     public void modificarPaciente(String rut, String nombre, String tipoSangre) {
-        for (Paciente paciente : listaPacientes) {
+        for (Pacientes paciente : listaPacientes) {
             if (paciente.getRut().equals(rut)) {
                 paciente.setNombre(nombre);
                 paciente.setTipoSangre(tipoSangre);
@@ -72,7 +71,7 @@ public class AdministradorSistema {
         guardarPacientes();
     }
 
-    public List<Paciente> obtenerListaPacientes() {
+    public List<Pacientes> obtenerListaPacientes() {
         return listaPacientes;
     }
 
@@ -95,9 +94,9 @@ public class AdministradorSistema {
                 String fechaHora = partes[1];
                 String nombre = partes[2];
                 String descripcion = partes[3];
-                Paciente paciente = buscarPaciente(rut);
+                Pacientes paciente = buscarPaciente(rut);
                 if (paciente == null) {
-                    paciente = new Paciente(nombre, rut, "", "");
+                    paciente = new Pacientes(nombre, rut, "", "");
                     listaPacientes.add(paciente);
                 }
                 agendarCita(paciente, fechaHora, descripcion);
@@ -126,8 +125,8 @@ public class AdministradorSistema {
         return rut.equals("admin") && contrasena.equals("admin");
     }
 
-    private Paciente buscarPaciente(String rut) {
-        for (Paciente paciente : listaPacientes) {
+    private Pacientes buscarPaciente(String rut) {
+        for (Pacientes paciente : listaPacientes) {
             if (paciente.getRut().equals(rut)) {
                 return paciente;
             }

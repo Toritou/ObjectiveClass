@@ -2,7 +2,7 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.GestionPaciente;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -66,7 +66,7 @@ public class MenuPrincipal {
             menuAdmin.mostrarMenu();
         } else {
             //! Si no es administrador, intentar iniciar sesiOn como paciente
-            Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
+            Pacientes paciente = gestionPaciente.iniciarSesion(rut, contrasena);
             if (paciente != null) {
                 MenuPaciente menuPacientes = new MenuPaciente(paciente);
                 menuPacientes.mostrarMenu();
@@ -108,7 +108,7 @@ public class MenuPrincipal {
         System.out.print("Ingrese su contraseña: ");
         String contrasena = scanner.nextLine();
 
-        Paciente nuevoPaciente = new Paciente(nombreCompleto, rut, correo, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
+        Pacientes nuevoPaciente = new Pacientes(nombreCompleto, rut, correo, edad, fechaNacimiento, tipoSangre, peso, estadoCivil, domicilio, enfermedades, alergias, medicamentos, cirugias, otros, contrasena);
         gestionPaciente.agregarPaciente(nuevoPaciente);
 
         System.out.println("Registro completado. Ahora puede iniciar sesión.");

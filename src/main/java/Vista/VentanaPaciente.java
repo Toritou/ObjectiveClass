@@ -1,7 +1,7 @@
 package Vista;
 
 import Controlador.Correo;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -11,11 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class VentanaPaciente extends JFrame {
-    private final Paciente pacienteActual;
+    private final Pacientes pacienteActual;
     private final Correo correo;
 
 
-    public VentanaPaciente(Paciente paciente) {
+    public VentanaPaciente(Pacientes paciente) {
         this.pacienteActual = paciente;
         initComponents();
         correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
@@ -195,7 +195,7 @@ public class VentanaPaciente extends JFrame {
         }
     }
 
-    private void eliminarCita(Paciente paciente, int numeroCita) {
+    private void eliminarCita(Pacientes paciente, int numeroCita) {
         File agendaFile = new File("agenda.csv");
         File tempFile = new File("agenda_temp.csv");
 

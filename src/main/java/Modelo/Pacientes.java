@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Paciente {
+public class Pacientes {
     private String nombreCompleto;
     private final String rut;
     private String correo;
     private String edad;
-    private String fechaNacimiento;
+    private final String fechaNacimiento;
     private String tipoSangre;
     private String peso;
     private String estadoCivil;
@@ -20,9 +20,9 @@ public class Paciente {
     private String cirugias;
     private String otros;
     private final String fichaMedica;
-    private List<Date> citas; // Nueva lista para almacenar las citas del paciente
+    private final List<Date> citas; // Nueva lista para almacenar las citas del paciente
 
-    public Paciente(String nombreCompleto, String rut, String Correo ,String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
+    public Pacientes(String nombreCompleto, String rut, String Correo , String edad, String fechaNacimiento, String tipoSangre, String peso, String estadoCivil, String domicilio, String enfermedades, String alergias, String medicamentos, String cirugias, String otros, String fichaMedica) {
         this.nombreCompleto = nombreCompleto;
         this.rut = rut;
         this.correo = Correo;
@@ -41,13 +41,7 @@ public class Paciente {
         this.citas = new ArrayList<>();
     }
 
-    public Paciente(String string2, String juanPérez, int i1, String s2, String string1, int i, String soltero, String s1, String ninguna1, String string, String s, String ninguna, String adminRut, String adminContrasena) {
-        this.rut = adminRut;
-        this.fichaMedica = adminContrasena;
-        this.citas = new ArrayList<>();
-    }
-
-    public Paciente(String nombre, String rut, String fechaNacimiento, String tipoSangre) {
+    public Pacientes(String nombre, String rut, String fechaNacimiento, String tipoSangre) {
         this.nombreCompleto = nombre;
         this.rut = rut;
         this.fechaNacimiento = fechaNacimiento;
@@ -132,14 +126,6 @@ public class Paciente {
 
     public void setTipoSangre(String tipoSangre) {
         this.tipoSangre = tipoSangre;
-    }
-
-    public List<Date> getCitas() {
-        return citas;
-    }
-
-    public void setCitas(List<Date> citas) {
-        this.citas = citas;
     }
 
     @Override

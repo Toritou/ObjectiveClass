@@ -1,11 +1,11 @@
 package Controlador;
 
-import Modelo.Paciente;
+import Modelo.Pacientes;
 import csv.CSVManager;
 import java.util.*;
 
 public class GestionPaciente {
-    private final Map<String, Paciente> pacientes;
+    private final Map<String, Pacientes> pacientes;
 
     public GestionPaciente() {
         this.pacientes = new HashMap<>();
@@ -13,15 +13,15 @@ public class GestionPaciente {
     }
 
     private void cargarPacientesDesdeCSV() {
-        List<Paciente> pacientesCargados = CSVManager.leerPacientes();
-        for (Paciente paciente : pacientesCargados) {
+        List<Pacientes> pacientesCargados = CSVManager.leerPacientes();
+        for (Pacientes paciente : pacientesCargados) {
             pacientes.put(paciente.getRut(), paciente);
         }
     }
 
-    public Paciente iniciarSesion(String rut, String contrasena) {
+    public Pacientes iniciarSesion(String rut, String contrasena) {
         try {
-            Paciente paciente = pacientes.get(rut);
+            Pacientes paciente = pacientes.get(rut);
             if (paciente == null) {
                 throw new IllegalArgumentException("Paciente no encontrado con el RUT: " + rut);
             }
@@ -40,7 +40,7 @@ public class GestionPaciente {
         CSVManager.escribirPacientes(new ArrayList<>(pacientes.values()));
     }
 
-    public void agregarPaciente(Paciente paciente) {
+    public void agregarPaciente(Pacientes paciente) {
         pacientes.put(paciente.getRut(), paciente);
         guardarPacientesEnCSV();
     }

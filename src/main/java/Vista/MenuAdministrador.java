@@ -2,7 +2,7 @@ package Vista;
 
 import Controlador.AdministradorSistema;
 import Controlador.Correo;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -81,7 +81,7 @@ public class MenuAdministrador {
     private void agendarHora() {
         System.out.print("Ingrese el Rut del paciente: ");
         String rut = scanner.nextLine();
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             JDateChooser dateChooser = new JDateChooser();
@@ -143,7 +143,7 @@ public class MenuAdministrador {
         if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
             System.out.print("Ingrese el Rut del paciente: ");
             String rut = scanner.nextLine();
-            Paciente paciente = buscarPaciente(rut);
+            Pacientes paciente = buscarPaciente(rut);
 
             if (paciente != null) {
                 JDateChooser dateChooser = new JDateChooser();
@@ -218,7 +218,7 @@ public class MenuAdministrador {
     private void agregarPaciente() {
         System.out.print("Ingrese el Rut del paciente: ");
         String rut = scanner.nextLine();
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente == null) {
             System.out.print("Ingrese el nombre del paciente: ");
@@ -227,7 +227,7 @@ public class MenuAdministrador {
             String fechaNacimiento = scanner.nextLine();
             System.out.print("Ingrese el tipo de sangre del paciente: ");
             String tipoSangre = scanner.nextLine();
-            administradorSistema.agregarPaciente(new Paciente(nombre, rut, fechaNacimiento, tipoSangre));
+            administradorSistema.agregarPaciente(new Pacientes(nombre, rut, fechaNacimiento, tipoSangre));
             JOptionPane.showMessageDialog(null, "Paciente agregado correctamente.");
         } else {
             JOptionPane.showMessageDialog(null, "El paciente ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -237,7 +237,7 @@ public class MenuAdministrador {
     private void modificarPaciente() {
         System.out.print("Ingrese el Rut del paciente a modificar: ");
         String rut = scanner.nextLine();
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             System.out.print("Ingrese el nuevo nombre del paciente: ");
@@ -254,7 +254,7 @@ public class MenuAdministrador {
     private void eliminarPaciente() {
         System.out.print("Ingrese el Rut del paciente a eliminar: ");
         String rut = scanner.nextLine();
-        Paciente paciente = buscarPaciente(rut);
+        Pacientes paciente = buscarPaciente(rut);
 
         if (paciente != null) {
             administradorSistema.eliminarPaciente(rut);
@@ -273,8 +273,8 @@ public class MenuAdministrador {
         administradorSistema.obtenerListaPacientes().forEach(paciente -> System.out.println(paciente.getNombreCompleto()));
     }
 
-    private Paciente buscarPaciente(String rut) {
-        for (Paciente paciente : administradorSistema.obtenerListaPacientes()) {
+    private Pacientes buscarPaciente(String rut) {
+        for (Pacientes paciente : administradorSistema.obtenerListaPacientes()) {
             if (paciente.getRut().equals(rut)) {
                 return paciente;
             }

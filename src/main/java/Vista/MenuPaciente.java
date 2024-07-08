@@ -1,7 +1,7 @@
 package Vista;
 
 import Controlador.Correo;
-import Modelo.Paciente;
+import Modelo.Pacientes;
 import com.toedter.calendar.JDateChooser;
 
 
@@ -13,10 +13,10 @@ import java.util.Scanner;
 
 public class MenuPaciente {
     private final Scanner scanner;
-    private final Paciente pacienteActual;
+    private final Pacientes pacienteActual;
     private final Correo correo;
 
-    public MenuPaciente(Paciente paciente) {
+    public MenuPaciente(Pacientes paciente) {
         this.scanner = new Scanner(System.in);
         this.pacienteActual = paciente;
         correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
@@ -184,7 +184,7 @@ public class MenuPaciente {
         }
     }
 
-    private void eliminarCita(Paciente paciente, int numeroCita) {
+    private void eliminarCita(Pacientes paciente, int numeroCita) {
         try (BufferedReader br = new BufferedReader(new FileReader("agenda.csv"));
              PrintWriter pw = new PrintWriter(new FileWriter("citasborradas.csv"))) {
 
