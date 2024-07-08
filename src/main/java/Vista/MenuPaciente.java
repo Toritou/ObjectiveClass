@@ -1,7 +1,9 @@
 package Vista;
 
+import Controlador.Correo;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
+
 
 import javax.swing.*;
 import java.io.*;
@@ -12,10 +14,12 @@ import java.util.Scanner;
 public class MenuPaciente {
     private final Scanner scanner;
     private final Paciente pacienteActual;
+    private final Correo correo;
 
     public MenuPaciente(Paciente paciente) {
         this.scanner = new Scanner(System.in);
         this.pacienteActual = paciente;
+        correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
     }
 
     public void mostrarMenu() {
@@ -109,6 +113,13 @@ public class MenuPaciente {
                                     + pacienteActual.getNombreCompleto() + "," + descripcion;
                             guardarCitaEnAgenda(cita);
                             JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
+
+                            // Enviar correo de confirmación
+                            String destinatario = pacienteActual.getCorreo();
+                            String asunto = "Confirmación de Cita";
+                            String contenidoHtml = "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>";
+                            correo.enviarCorreo(destinatario, asunto, contenidoHtml);
+
                         } else {
                             JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
