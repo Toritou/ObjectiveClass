@@ -1,22 +1,24 @@
 package Vista;
 
+import Controlador.Correo;
 import Modelo.Paciente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class VentanaPaciente extends JFrame {
     private final Paciente pacienteActual;
+    private final Correo correo;
+
 
     public VentanaPaciente(Paciente paciente) {
         this.pacienteActual = paciente;
         initComponents();
+        correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
     }
 
     private void initComponents() {
@@ -32,52 +34,27 @@ public class VentanaPaciente extends JFrame {
 
         // Botón para ver información personal
         JButton btnVerInfoPersonal = new JButton("Ver información personal");
-        btnVerInfoPersonal.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                verInformacionPersonal();
-            }
-        });
+        btnVerInfoPersonal.addActionListener(_ -> verInformacionPersonal());
         panel.add(btnVerInfoPersonal);
 
         // Botón para agendar hora
         JButton btnAgendarHora = new JButton("Agendar hora");
-        btnAgendarHora.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agendarHora();
-            }
-        });
+        btnAgendarHora.addActionListener(_ -> agendarHora());
         panel.add(btnAgendarHora);
 
         // Botón para ver agenda
         JButton btnVerAgenda = new JButton("Ver agenda");
-        btnVerAgenda.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                verAgenda();
-            }
-        });
+        btnVerAgenda.addActionListener(_ -> verAgenda());
         panel.add(btnVerAgenda);
 
         // Botón para eliminar hora
         JButton btnEliminarHora = new JButton("Eliminar hora");
-        btnEliminarHora.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eliminarHora();
-            }
-        });
+        btnEliminarHora.addActionListener(_ -> eliminarHora());
         panel.add(btnEliminarHora);
 
         // Botón para salir
         JButton btnSalir = new JButton("Salir");
-        btnSalir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        btnSalir.addActionListener(_ -> dispose());
         panel.add(btnSalir);
 
         add(panel);
@@ -124,34 +101,38 @@ public class VentanaPaciente extends JFrame {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            btnAceptar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        int confirmacion = JOptionPane.showConfirmDialog(null,
-                                "¿Está seguro que desea seleccionar esta fecha?",
-                                "Confirmación de Selección",
-                                JOptionPane.YES_NO_OPTION);
+            btnAceptar.addActionListener(_ -> {
+                Date selectedDate = dateChooser.getDate();
+                if (selectedDate != null) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null,
+                            "¿Está seguro que desea seleccionar esta fecha?",
+                            "Confirmación de Selección",
+                            JOptionPane.YES_NO_OPTION);
 
-                        if (confirmacion == JOptionPane.YES_OPTION) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            String fechaHora = sdf.format(selectedDate);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        String fechaHora = sdf.format(selectedDate);
 
-                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
-                            if (descripcion != null && !descripcion.trim().isEmpty()) {
-                                String cita = pacienteActual.getRut() + "," + fechaHora + ","
-                                        + pacienteActual.getNombreCompleto() + "," + descripcion;
-                                guardarCitaEnAgenda(cita);
-                                JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-                            frame.dispose();
+                        String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
+                        if (descripcion != null && !descripcion.trim().isEmpty()) {
+                            String cita = pacienteActual.getRut() + "," + fechaHora + ","
+                                    + pacienteActual.getNombreCompleto() + "," + descripcion;
+                            guardarCitaEnAgenda(cita);
+                            JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
+
+                            // Enviar correo de confirmación
+                            String destinatario = pacienteActual.getCorreo();
+                            String asunto = "Confirmación de Cita";
+                            String contenidoHtml = "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>";
+                            correo.enviarCorreo(destinatario, asunto, contenidoHtml);
+
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                        frame.dispose();
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
 
