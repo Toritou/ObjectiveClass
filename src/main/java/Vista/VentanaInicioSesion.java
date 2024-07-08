@@ -82,6 +82,14 @@ public class VentanaInicioSesion extends JFrame {
                 String contrasena = new String(txtContrasena.getPassword());
                 if (administradorSistema.iniciarSesionComoAdmin(rut, contrasena)) {
                     JOptionPane.showMessageDialog(frameIniciarSesion, "Bienvenido Administrador");
+
+                    // Crear y mostrar la ventana del administrador
+                    VentanaAdministrador ventanaAdmin = new VentanaAdministrador(administradorSistema, null); // Pasa la instancia de AdministradorSistema y Correo
+                    ventanaAdmin.setVisible(true);
+
+                    // Cerrar la ventana de inicio de sesión
+                    frameIniciarSesion.dispose();
+                    VentanaInicioSesion.this.dispose();
                 } else {
                     Paciente paciente = gestionPaciente.iniciarSesion(rut, contrasena);
                     if (paciente != null) {
@@ -201,7 +209,7 @@ public class VentanaInicioSesion extends JFrame {
         });
         panel.add(btnRegistrar);
 
-        JButton btnVolver = new JButton( "Volver");
+        JButton btnVolver = new JButton("Volver");
         btnVolver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -212,5 +220,11 @@ public class VentanaInicioSesion extends JFrame {
 
         frameRegistrarse.add(panel);
         frameRegistrarse.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new VentanaInicioSesion().setVisible(true);
+        });
     }
 }
