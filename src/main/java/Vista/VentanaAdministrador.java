@@ -28,6 +28,7 @@ public class VentanaAdministrador extends JFrame {
     public VentanaAdministrador(AdministradorSistema administradorSistema, Correo correo) {
         this.administradorSistema = administradorSistema;
         this.correo = correo;
+        correo = new Correo("re_LRrR6pYX_2RAA3bGD1Hx4gn1QAr5PCQso");
 
         configurarVentana();
         inicializarComponentes();
@@ -169,14 +170,16 @@ public class VentanaAdministrador extends JFrame {
 
                         String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la descripción de la cita:");
                         if (descripcion != null && !descripcion.trim().isEmpty()) {
+                            String destinatario = paciente.getCorreo();
+                            if (isValidEmailAddress(destinatario)) {
+                                // Aquí puedes enviar el correo si lo deseas
+                                // correo.enviarCorreo(destinatario, "Confirmación de Cita", "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>");
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Correo electrónico no válido.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                            }
+
                             administradorSistema.agendarCita(paciente, fechaHora, descripcion);
                             JOptionPane.showMessageDialog(frame, "Cita agendada correctamente.");
-
-                            // Enviar correo de confirmación
-                            String destinatario = paciente.getCorreo();
-                            String asunto = "Confirmación de Cita";
-                            String contenidoHtml = "<strong>Su cita ha sido agendada para el " + fechaHora + ".</strong>";
-                            correo.enviarCorreo(destinatario, asunto, contenidoHtml);
                         } else {
                             JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -192,80 +195,107 @@ public class VentanaAdministrador extends JFrame {
         }
     }
 
+    private boolean isValidEmailAddress(String email) {
+        // Lógica de validación de dirección de correo electrónico básica
+        return email != null && email.contains("@");
+    }
+
+
     private void modificarHora() {
         String indiceStr = JOptionPane.showInputDialog(this, "Ingrese el número de la cita a modificar:");
-        int indice = Integer.parseInt(indiceStr);
 
-        if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
-            String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
-            Paciente paciente = buscarPaciente(rut);
+        // Verificar si el usuario canceló la operación o no ingresó ningún valor
+        if (indiceStr == null || indiceStr.trim().isEmpty()) {
+            return; // Salir del método si no se ingresó ningún valor
+        }
 
-            if (paciente != null) {
-                JDateChooser dateChooser = new JDateChooser();
-                dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
-                dateChooser.setMinSelectableDate(new Date());
+        try {
+            int indice = Integer.parseInt(indiceStr);
 
-                JButton btnAceptar = new JButton("Aceptar");
+            if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
+                String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
+                Paciente paciente = buscarPaciente(rut);
 
-                JFrame frame = new JFrame("Seleccione la Nueva Fecha y Hora");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.getContentPane().add(dateChooser, "Center");
-                frame.getContentPane().add(btnAceptar, "South");
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                if (paciente != null) {
+                    JDateChooser dateChooser = new JDateChooser();
+                    dateChooser.setDateFormatString("dd/MM/yyyy HH:mm");
+                    dateChooser.setMinSelectableDate(new Date());
 
-                btnAceptar.addActionListener(e -> {
-                    Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        int confirmacion = JOptionPane.showConfirmDialog(null,
-                                "¿Está seguro que desea seleccionar esta fecha?",
-                                "Confirmación de Selección",
-                                JOptionPane.YES_NO_OPTION);
+                    JButton btnAceptar = new JButton("Aceptar");
 
-                        if (confirmacion == JOptionPane.YES_OPTION) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            String fechaHora = sdf.format(selectedDate);
+                    JFrame frame = new JFrame("Seleccione la Nueva Fecha y Hora");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.getContentPane().add(dateChooser, "Center");
+                    frame.getContentPane().add(btnAceptar, "South");
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
 
-                            String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
-                            if (descripcion != null && !descripcion.trim().isEmpty()) {
-                                administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
-                                JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
+                    btnAceptar.addActionListener(e -> {
+                        Date selectedDate = dateChooser.getDate();
+                        if (selectedDate != null) {
+                            int confirmacion = JOptionPane.showConfirmDialog(null,
+                                    "¿Está seguro que desea seleccionar esta fecha?",
+                                    "Confirmación de Selección",
+                                    JOptionPane.YES_NO_OPTION);
 
-                                // Enviar correo de confirmación
-                                String destinatario = paciente.getCorreo();
-                                String asunto = "Modificación de Cita";
-                                String contenidoHtml = "<strong>Su cita ha sido modificada para el " + fechaHora + ".</strong>";
-                                correo.enviarCorreo(destinatario, asunto, contenidoHtml);
-                            } else {
-                                JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                            if (confirmacion == JOptionPane.YES_OPTION) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                String fechaHora = sdf.format(selectedDate);
+
+                                String descripcion = JOptionPane.showInputDialog(frame, "Ingrese la nueva descripción de la cita:");
+                                if (descripcion != null && !descripcion.trim().isEmpty()) {
+                                    administradorSistema.modificarCita(indice, paciente, fechaHora, descripcion);
+                                    JOptionPane.showMessageDialog(frame, "Cita modificada correctamente.");
+
+                                    // Enviar correo de confirmación
+                                    String destinatario = paciente.getCorreo();
+                                    String asunto = "Modificación de Cita";
+                                    String contenidoHtml = "<strong>Su cita ha sido modificada para el " + fechaHora + ".</strong>";
+                                    correo.enviarCorreo(destinatario, asunto, contenidoHtml);
+                                } else {
+                                    JOptionPane.showMessageDialog(frame, "Descripción no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                frame.dispose();
                             }
-                            frame.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                });
+                    });
 
+                } else {
+                    JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese un valor numérico válido para el índice.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void eliminarHora() {
         String indiceStr = JOptionPane.showInputDialog(this, "Ingrese el número de la cita a eliminar:");
-        int indice = Integer.parseInt(indiceStr);
 
-        if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
-            administradorSistema.eliminarCita(indice);
-            JOptionPane.showMessageDialog(null, "Cita eliminada correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Verificar si el usuario canceló la operación o no ingresó ningún valor
+        if (indiceStr == null || indiceStr.trim().isEmpty()) {
+            return; // Salir del método si no se ingresó ningún valor
+        }
+
+        try {
+            int indice = Integer.parseInt(indiceStr);
+
+            if (indice >= 0 && indice < administradorSistema.obtenerAgenda().size()) {
+                administradorSistema.eliminarCita(indice);
+                JOptionPane.showMessageDialog(null, "Cita eliminada correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Índice de cita fuera de rango.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese un valor numérico válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void agregarPaciente() {
         String rut = JOptionPane.showInputDialog(this, "Ingrese el Rut del paciente:");
