@@ -69,6 +69,20 @@ public class VentanaAdministrador extends JFrame {
         comboBoxVer = new JComboBox<>(opcionesVer);
         comboBoxVer.setBounds(50, 150, 250, 30);
         add(comboBoxVer);
+        // Crear botón "Salir"
+        JButton btnSalir = new JButton("Salir");
+        btnSalir.setBounds(50, 200, 250, 30);
+        add(btnSalir);
+
+        // Agregar ActionListener al botón "Salir"
+        btnSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Cierra la ventana actual
+                VentanaInicioSesion ventanaInicioSesion = new VentanaInicioSesion();
+                ventanaInicioSesion.setVisible(true); // Abre la ventana de inicio de sesión
+            }
+        });
 
         // Agregar ActionListener al JComboBox para Gestión de Horas
         comboBoxHoras.addActionListener(e -> {
